@@ -1,3 +1,6 @@
+using AutoNet.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace AutoNet
 {
 	public class Program
@@ -8,6 +11,9 @@ namespace AutoNet
 
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
+
+			builder.Services.AddDbContext<AutoNetContext>(options =>
+				options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 			var app = builder.Build();
 
