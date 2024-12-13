@@ -25,6 +25,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item">
+                            <button class="btn btn-info">
+                            <a href="#" class="nav-link text-white" data-bs-toggle="modal" data-bs-target="#registrationModal">Register</a>
+
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -35,6 +41,52 @@
             @RenderBody()
         </main>
     </div>
+
+    @* Registration Modal *@
+
+    @{
+        var registerViewModel = ViewData["RegisterViewModel"] as AutoNet.Models.Accounts.RegisterViewModel;
+    }
+    <div class="modal" id="registrationModal" tabindex="-1" aria-labelledby="registrationModelLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" asp-controller="Accounts" asp-action="Register" class="p-3">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="form-group mb-3 col-12">
+                        <input id="Email" name="Email" class="form-control" value="@registerViewModel?.Email" placeholder="Email" />
+                        <span asp-validation-for="@registerViewModel.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3 col-12">
+                        <input id="FirstName" name="FirstName" class="form-control" value="@registerViewModel?.FirstName" placeholder="First Name" />
+                    </div>
+
+                    <div class="form-group mb-3 col-12">
+                        <input id="LastName" name="LastName" class="form-control" value="@registerViewModel?.LastName" placeholder="Last Name" />
+                    </div>
+
+                    <div class="form-group mb-3 col-12">
+                        <input id="Password" name="Password" class="form-control" value="@registerViewModel?.Password" placeholder="Password" />
+                        <span asp-validation-for="@registerViewModel.Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3 col-12">
+                        <input id="ConfirmPassword" name="ConfirmPassword" class="form-control" value="@registerViewModel?.ConfirmPassword" placeholder="Confirm Password" />
+                        <span asp-validation-for="@registerViewModel.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-12">
+                        <button type="submit" class="btn btn-outline-dark w-100">
+                            Register
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 
     <footer class="border-top footer text-muted">
         <div class="container">
