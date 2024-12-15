@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AutoNet.ApplicationServices\AutoNet.ApplicationServices.csproj" />
     <ProjectReference Include="..\AutoNet.Data\AutoNet.Data.csproj" />
   </ItemGroup>
 

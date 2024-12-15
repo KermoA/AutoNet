@@ -1,31 +1,35 @@
 ﻿@model IEnumerable<AutoNet.Models.Cars.CarsIndexViewModel>
 
 <table>
-	<thead>
-		<tr>
-			<th>Make</th>
-			<th>Model</th>
-			<th>Year</th>
-			<th>Fuel</th>
-			<th>Mileage</th>
-			<th>Engine</th>
-			<th>Power</th>
-			<th>Transmission</th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var car in Model)
-		{
-			<tr>
-				<td>@car.Make</td>
-				<td>@car.Model</td>
-				<td>@car.Year</td>
-				<td>@car.Fuel</td>
-				<td>@car.Mileage</td>
-				<td>@car.EngineDisplacementInLiters</td>
-				<td>@car.Power</td>
-				<td>@car.Transmission</td>
-			</tr>
-		}
-	</tbody>
+    <thead>
+        <tr>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Fuel</th>
+            <th>Mileage</th>
+            <th>Engine</th>
+            <th>Power</th>
+            <th>Transmission</th>
+            <th>User</th>
+            <th>Full Name</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>@car.Make</td>
+                <td>@car.Model</td>
+                <td>@car.Year</td>
+                <td>@car.Fuel</td>
+                <td>@car.Mileage</td>
+                <td>@car.EngineDisplacementInLiters</td>
+                <td>@car.Power</td>
+                <td>@car.Transmission</td>
+                <td>@car.UserName</td>
+                <td>@car.UserFirstName @car.UserLastName</td> <!-- Display first and last name -->
+            </tr>
+        }
+    </tbody>
 </table>

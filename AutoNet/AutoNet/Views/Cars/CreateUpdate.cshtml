@@ -1,0 +1,107 @@
+﻿@model AutoNet.Models.Cars.CarCreateUpdateViewModel
+
+@{
+    ViewData["Title"] = Model.Id == null ? "Create Car" : "Update Car";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Make" class="control-label"></label>
+        <input asp-for="Make" class="form-control" />
+        <span asp-validation-for="Make" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Model" class="control-label"></label>
+        <input asp-for="Model" class="form-control" />
+        <span asp-validation-for="Model" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Year" class="control-label"></label>
+        <input asp-for="Year" class="form-control" />
+        <span asp-validation-for="Year" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="VIN" class="control-label"></label>
+        <input asp-for="VIN" class="form-control" />
+        <span asp-validation-for="VIN" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Mileage" class="control-label"></label>
+        <input asp-for="Mileage" class="form-control" />
+        <span asp-validation-for="Mileage" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Power" class="control-label"></label>
+        <input asp-for="Power" class="form-control" />
+        <span asp-validation-for="Power" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EngineDisplacement" class="control-label"></label>
+        <input asp-for="EngineDisplacement" class="form-control" />
+        <span asp-validation-for="EngineDisplacement" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Fuel" class="control-label"></label>
+        <select asp-for="Fuel" class="form-control">
+            <option value="Gasoline">Gasoline</option>
+            <option value="Diesel">Diesel</option>
+            <option value="Electric">Electric</option>
+            <option value="Hybrid">Hybrid</option>
+        </select>
+        <span asp-validation-for="Fuel" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Transmission" class="control-label"></label>
+        <select asp-for="Transmission" class="form-control">
+            <option value="Manual">Manual</option>
+            <option value="Automatic">Automatic</option>
+        </select>
+        <span asp-validation-for="Transmission" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Drivetrain" class="control-label"></label>
+        <select asp-for="Drivetrain" class="form-control">
+            <option value="FWD">Front-Wheel Drive</option>
+            <option value="RWD">Rear-Wheel Drive</option>
+            <option value="AWD">All-Wheel Drive</option>
+        </select>
+        <span asp-validation-for="Drivetrain" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="InspectionMonth" class="control-label"></label>
+        <input asp-for="InspectionMonth" class="form-control" />
+        <span asp-validation-for="InspectionMonth" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="InspectionYear" class="control-label"></label>
+        <input asp-for="InspectionYear" class="form-control" />
+        <span asp-validation-for="InspectionYear" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">
+            @if (Model.Id == null)
+            {
+                <text>Create</text>
+            }
+            else
+            {
+                <text>Update</text>
+            }
+        </button>
+        <a href="@Url.Action("Index", "Cars")" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
