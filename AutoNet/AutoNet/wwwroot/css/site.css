@@ -22,9 +22,9 @@ body {
 }
 
 input.input-validation-error {
-    border-color: #dc3545; /* Red border for invalid inputs */
+    border-color: #dc3545;
 }
 
 span.field-validation-error {
-    color: #dc3545; /* Red text for error messages */
+    color: #dc3545;
 }
