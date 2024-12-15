@@ -1,0 +1,47 @@
+﻿@model AutoNet.Models.Accounts.RegisterViewModel
+
+@{
+	ViewBag.Title = "User Registration";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"]</title>
+</head>
+<body>
+	<div>
+		<div class="row col-md-12">
+			<h1 class="mt-2 mb-2">User Registration</h1>
+			<hr />
+			<form method="post">
+				<div asp-validation-summary="All" class="text-danger"></div>
+				<div class="form-group mb-2">
+					<input asp-for="Email" class="form-control" placeholder="Email" />
+					<span asp-validation-for="Email" class="text-danger"></span>
+				</div>
+				<div class="form-group mb-2">
+					<input asp-for="FirstName" class="form-control" placeholder="First Name" />
+				</div>
+				<div class="form-group mb-2">
+					<input asp-for="LastName" class="form-control" placeholder="Last Name" />
+				</div>
+				<div class="form-group mb-2">
+					<input asp-for="Password" class="form-control" placeholder="Password" />
+				</div>
+				<div class="form-group mb-2">
+					<input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+				</div>
+				<button type="submit" class="btn btn-info mt-3 mb-3">
+					Register
+				</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+
+
+

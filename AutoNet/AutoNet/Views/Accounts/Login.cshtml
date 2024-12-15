@@ -1,0 +1,55 @@
+﻿@model AutoNet.Models.Accounts.LoginViewModel
+
+@{
+	ViewBag.Title = "User Login";
+}
+
+<div>
+	<div class="row col-md-12">
+		<h1 class="mt-2 mb-2">Local Account Login</h1>
+		<hr />
+		<form method="post">
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<div class="form-group mb-2">
+				<input asp-for="Email" class="form-control" placeholder="Email" />
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+
+			<div class="form-group mb-2">
+				<input asp-for="Password" class="form-control" placeholder="Password" />
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+
+			<div class="form-group mb-2">
+				<div class="d-flex justify-content-between align-items-center">
+					<div class="custom-checkbox">
+						<label asp-for="RememberMe">
+							<input asp-for="RememberMe" />
+							@Html.DisplayNameFor(m => m.RememberMe)
+						</label>
+					</div>
+					<div>
+						<a asp-action="ForgotPassword" class="text-decoration-none">Forgot Password?</a>
+					</div>
+				</div>
+			</div>
+
+			<button type="submit" class="btn btn-create">
+				Login
+			</button>
+		</form>
+	</div>
+
+	<div class="col-md-12 mb-3 mt-4">
+		<h1>External Login</h1>
+		<hr />
+		@{
+			if (Model.ExternalLogins.Count == 0)
+			{
+				<div>
+					No External Login
+				</div>
+			}
+		}
+	</div>
+</div>

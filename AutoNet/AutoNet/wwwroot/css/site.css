@@ -20,3 +20,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+input.input-validation-error {
+    border-color: #dc3545; /* Red border for invalid inputs */
+}
+
+span.field-validation-error {
+    color: #dc3545; /* Red text for error messages */
+}
