@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<AutoNet.Core.Domain.ApplicationUser> UserManager
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,12 +26,23 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
+                        @if(User.Identity.IsAuthenticated)
+                        {
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li>
+                            <form asp-controller="Accounts" asp-action="Logout" method="post">
+                                <button type="submit" class="btn btn-danger">Logout</button>
+                            </form>
+                            </li>
+                        }
+                        else
+                        {
                         <li class="nav-item">
                             <form asp-controller="Accounts" asp-action="Register" method="get">
                                 <button type="submit" class="btn btn-info">Register</button>
@@ -34,7 +52,8 @@
                             <form asp-controller="Accounts" asp-action="Login" method="get">
                                 <button type="submit" class="btn btn-danger">Login</button>
                             </form>
-                        </li>
+                        </li>                            
+                        }
                     </ul>
                 </div>
             </div>
