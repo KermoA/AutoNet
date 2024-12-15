@@ -126,7 +126,35 @@ namespace AutoNet.Controllers
             return View(model);
         }
 
-        [HttpPost]
+		[HttpGet]
+		[AllowAnonymous]
+		public async Task<IActionResult> ConfirmEmail(string userId, string token)
+		{
+			if (userId == null || token == null)
+			{
+				return RedirectToAction("Index", "Home");
+			}
+
+			var user = await _userManager.FindByIdAsync(userId);
+
+			if (user == null)
+			{
+				ViewBag.ErrorMessage = $"The User ID {userId} is not valid";
+				return View("NotFound");
+			}
+
+			var result = await _userManager.ConfirmEmailAsync(user, token);
+
+			if (result.Succeeded)
+			{
+				return View();
+			}
+
+			ViewBag.ErrorTitle = "Email cannot be confirmed";
+			return View("Error");
+		}
+
+		[HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
