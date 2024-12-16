@@ -67,7 +67,7 @@ namespace AutoNet.Controllers
                 .Where(car => car.UserId == currentUser.Id)
                 .ToList();
 
-            var carViewModels = userCars.Select(car => new UserCarsViewModel
+            var vm = userCars.Select(car => new UserCarsViewModel
             {
                 Id = car.Id,
                 Make = car.Make,
@@ -83,7 +83,7 @@ namespace AutoNet.Controllers
                 UserLastName = currentUser.LastName
             }).ToList();
 
-            return View(carViewModels);
+            return View(vm);
         }
 
 
@@ -204,6 +204,32 @@ namespace AutoNet.Controllers
             }
 
             return RedirectToAction(nameof(Index), vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var result = await _carsServices.Delete(id, currentUser.Id);
+
+                if (result)
+                {
+                    return RedirectToAction("UserCars");
+                }
+
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

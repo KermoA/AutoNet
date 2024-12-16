@@ -98,5 +98,22 @@ namespace AutoNet.ApplicationServices.Services
 
             return car;
         }
+
+        public async Task<bool> Delete (Guid carId, string userId)
+        {
+            var car = await _context.Cars
+                .FirstOrDefaultAsync(x => x.Id == carId && x.UserId == userId);
+
+            if (car == null)
+            {
+                throw new Exception($"Car with ID {carId} not found or does not belong to the current user.");
+            }
+
+            _context.Cars.Remove(car);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

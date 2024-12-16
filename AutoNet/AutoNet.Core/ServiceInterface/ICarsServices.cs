@@ -8,6 +8,7 @@ namespace AutoNet.Core.ServiceInterface
         Task<Car> DetailAsync(Guid id);
         Task<Car> Create(CarDto dto, string userName);
         Task<Car> Update(CarDto dto, string userName);
+        Task<bool> Delete(Guid carId, string userId);
 
     }
 }
