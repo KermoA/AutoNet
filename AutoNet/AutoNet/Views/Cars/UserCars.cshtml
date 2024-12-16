@@ -1,6 +1,8 @@
-﻿@model IEnumerable<AutoNet.Models.Cars.CarsIndexViewModel>
+﻿@model IEnumerable<AutoNet.Models.Cars.UserCarsViewModel>
 
-<table>
+<h1>My Cars</h1>
+
+<table class="table">
     <thead>
         <tr>
             <th>Make</th>
@@ -11,8 +13,6 @@
             <th>Engine</th>
             <th>Power</th>
             <th>Transmission</th>
-            <th>User</th>
-            <th>Full Name</th>
             <th></th>
         </tr>
     </thead>
@@ -28,9 +28,9 @@
                 <td>@car.EngineDisplacementInLiters</td>
                 <td>@car.Power</td>
                 <td>@car.Transmission</td>
-                <td>@car.UserName</td>
-                <td>@car.UserFirstName @car.UserLastName</td>
+                <td><a asp-action="Update" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-primary">Update</a></td>
             </tr>
         }
     </tbody>
 </table>
+
