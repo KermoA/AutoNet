@@ -25,7 +25,8 @@ namespace AutoNet.ApplicationServices.Services
         public async Task<Car> DetailAsync(Guid id)
         {
             var result = await _context.Cars
-                .FirstOrDefaultAsync(x => x.Id == id );
+                .Include(c => c.User)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             return result;
         }

@@ -30,6 +30,7 @@
                 <td>@car.Transmission</td>
                 <td>@car.UserName</td>
                 <td>@car.UserFirstName @car.UserLastName</td>
+                <td><a asp-action="Details" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-primary">Details</a></td>
             </tr>
         }
     </tbody>

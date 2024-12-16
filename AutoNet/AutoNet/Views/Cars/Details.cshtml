@@ -1,0 +1,51 @@
+﻿@model AutoNet.Models.Cars.CarDetailsViewModel
+
+@{
+    ViewData["Title"] = "Car Details";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h2>@Model.Make @Model.Model (@Model.Year)</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>General Information</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>VIN:</strong> @Model.VIN</li>
+                        <li class="list-group-item"><strong>Mileage:</strong> @Model.Mileage km</li>
+                        <li class="list-group-item"><strong>Power:</strong> @Model.Power HP</li>
+                        <li class="list-group-item"><strong>Engine Displacement:</strong> @Model.EngineDisplacement cc</li>
+                        <li class="list-group-item"><strong>Fuel:</strong> @Model.Fuel</li>
+                        <li class="list-group-item"><strong>Transmission:</strong> @Model.Transmission</li>
+                        <li class="list-group-item"><strong>Drivetrain:</strong> @Model.Drivetrain</li>
+                        <li class="list-group-item">
+                            <strong>Inspection:</strong>
+                            @Model.InspectionMonth / @Model.InspectionYear
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h4>Additional Information</h4>
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Description:</strong> @Model.Description</li>
+                        <li class="list-group-item"><strong>Created At:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</li>
+                        <li class="list-group-item"><strong>Updated At:</strong> @Model.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <h4>Owner Information</h4>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Username:</strong> @Model.UserName</li>
+                <li class="list-group-item"><strong>First Name:</strong> @Model.UserFirstName</li>
+                <li class="list-group-item"><strong>Last Name:</strong> @Model.UserLastName</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

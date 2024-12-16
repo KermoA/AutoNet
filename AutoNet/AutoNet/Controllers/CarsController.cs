@@ -59,6 +59,42 @@ namespace AutoNet.Controllers
             return View(result);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var car = await _carsServices.DetailAsync(id);
+
+            if (car == null)
+            {
+                return View("Error");
+            }
+
+            var vm = new CarDetailsViewModel
+            {
+                Id = car.Id,
+                Make = car.Make,
+                Model = car.Model,
+                Year = car.Year,
+                VIN = car.VIN,
+                Mileage = car.Mileage,
+                Power = car.Power,
+                EngineDisplacement = car.EngineDisplacement,
+                Fuel = car.Fuel.ToString(),
+                Transmission = car.Transmission.ToString(),
+                Drivetrain = car.Drivetrain.ToString(),
+                InspectionMonth = car.InspectionMonth,
+                InspectionYear = car.InspectionYear,
+                Description = car.Description,
+                CreatedAt = car.CreatedAt,
+                UpdatedAt = car.UpdatedAt,
+                UserName = car.User.UserName ?? "No User",
+                UserFirstName = car.User.FirstName ?? "No First Name",
+                UserLastName = car.User.LastName ?? "No Last Name"
+            };
+
+            return View(vm);
+        }
+
         public async Task<IActionResult> UserCars()
         {
             var currentUser = await _userManager.GetUserAsync(User);
