@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AutoNet.Core\AutoNet.Core.csproj" />
+    <ProjectReference Include="..\AutoNet.Data\AutoNet.Data.csproj" />
+  </ItemGroup>
+
 </Project>

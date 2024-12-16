@@ -1,4 +1,6 @@
+using AutoNet.ApplicationServices.Services;
 using AutoNet.Core.Domain;
+using AutoNet.Core.ServiceInterface;
 using AutoNet.Data;
 using AutoNet.Models.Accounts;
 using Microsoft.AspNetCore.Identity;
@@ -28,6 +30,8 @@ namespace AutoNet
                 .AddDefaultTokenProviders()
                 .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("CustomEmailConfirmation")
                 .AddDefaultUI();
+
+            builder.Services.AddScoped<ICarsServices, CarsServices>();
 
             builder.Services.AddDbContext<AutoNetContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

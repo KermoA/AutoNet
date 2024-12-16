@@ -11,5 +11,7 @@ namespace AutoNet.Data
 		: base(options) { }
 
         public DbSet<IdentityRole> IdentityRoles { get; set; }
+
+		public DbSet<Car> Cars { get; set; }
     }
 }
