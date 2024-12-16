@@ -143,11 +143,16 @@ namespace AutoNet.Controllers
             }
 
             var car = await _context.Cars
-                .FirstOrDefaultAsync(x => x.Id == id && x.UserId == currentUser.Id);
+                .FirstOrDefaultAsync(x => x.Id == id);
 
             if (car == null)
             {
                 return NotFound();
+            }
+
+            if (car.UserId != currentUser.Id)
+            {
+                return Forbid();
             }
 
             var vm = new CarCreateUpdateViewModel
@@ -174,6 +179,26 @@ namespace AutoNet.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(CarCreateUpdateViewModel vm)
         {
+            var userName = User.Identity.Name;
+            var currentUser = await _userManager.FindByNameAsync(userName);
+
+            if (currentUser == null)
+            {
+                return Unauthorized();
+            }
+
+            var car = await _context.Cars.FirstOrDefaultAsync(x => x.Id == vm.Id);
+
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            if (car.UserId != currentUser.Id)
+            {
+                return Forbid();
+            }
+
             var dto = new CarDto()
             {
                 Id = vm.Id,
@@ -194,16 +219,14 @@ namespace AutoNet.Controllers
                 UpdatedAt = DateTime.UtcNow
             };
 
-            var userName = User.Identity.Name;
-
-            var result = await _carsServices.Update(dto, userName);
+            var result = await _carsServices.Update(dto);
 
             if (result == null)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("UserCars");
             }
 
-            return RedirectToAction(nameof(Index), vm);
+            return RedirectToAction("UserCars");
         }
 
         [HttpPost]

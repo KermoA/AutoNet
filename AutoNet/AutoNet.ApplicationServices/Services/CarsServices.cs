@@ -68,13 +68,13 @@ namespace AutoNet.ApplicationServices.Services
             return car;
         }
 
-        public async Task<Car> Update(CarDto dto, string userId)
+        public async Task<Car> Update(CarDto dto)
         {
-            var car = await _context.Cars
-                .FirstOrDefaultAsync(x => x.Id == dto.Id && x.UserId == userId);
+            var car = await _context.Cars.FirstOrDefaultAsync(x => x.Id == dto.Id);
+
             if (car == null)
             {
-                throw new Exception($"Car with ID {dto.Id} not found or does not belong to the current user.");
+                return null;
             }
 
             car.Make = dto.Make;
@@ -90,10 +90,9 @@ namespace AutoNet.ApplicationServices.Services
             car.InspectionMonth = dto.InspectionMonth;
             car.InspectionYear = dto.InspectionYear;
             car.Description = dto.Description;
-            car.UpdatedAt = DateTime.Now;
+            car.UpdatedAt = DateTime.UtcNow;
 
             _context.Cars.Update(car);
-
             await _context.SaveChangesAsync();
 
             return car;
