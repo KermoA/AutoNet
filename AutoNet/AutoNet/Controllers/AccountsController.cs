@@ -10,15 +10,18 @@ namespace AutoNet.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ConfirmationEmail _confirmationEmail;
 
         public AccountsController
             (
                 UserManager<ApplicationUser> userManager,
-                SignInManager<ApplicationUser> signInManager
+                SignInManager<ApplicationUser> signInManager,
+                ConfirmationEmail confirmationEmail
             )
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _confirmationEmail = confirmationEmail;
         }
 
         [HttpGet]
@@ -48,18 +51,19 @@ namespace AutoNet.Controllers
                 {
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                    var confirmationLink = Url.Action("ConfirmEmail", "Accounts", new { userId = user.Id, token = token }, Request.Scheme);
+                    var confirmationLink = Url.Action("ConfirmEmail", "Accounts", new { token, email = user.Email }, Request.Scheme);
 
+                    bool emailSent = await _confirmationEmail.SendEmailAsync(user.Email, confirmationLink);
 
-                    if (_signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    if (emailSent)
                     {
-                        return RedirectToAction("ListUsers", "Administrations");
+                        ViewBag.ErrorTitle = "Registration Successful";
+                        ViewBag.ErrorMessage = "Please check your email to confirm your account.";
+                        return View("RegistrationSuccess");
                     }
 
-                    ViewBag.ErrorTitle = "Registration succesful";
-                    ViewBag.ErrorMessage = "Before you can login, please confirm your email," +
-                        "by clicking on the confirmation link we have emailed you.";
-
+                    ViewBag.ErrorTitle = "Registration Successful";
+                    ViewBag.ErrorMessage = "We could not send a confirmation email. Please contact support.";
                     return View("EmailError");
                 }
 
@@ -69,7 +73,7 @@ namespace AutoNet.Controllers
                 }
             }
 
-            return View();
+            return View(vm);
         }
 
         [HttpGet]
@@ -126,35 +130,26 @@ namespace AutoNet.Controllers
             return View(model);
         }
 
-		[HttpGet]
-		[AllowAnonymous]
-		public async Task<IActionResult> ConfirmEmail(string userId, string token)
-		{
-			if (userId == null || token == null)
-			{
-				return RedirectToAction("Index", "Home");
-			}
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email))
+            {
+                return View("Error");
+            }
 
-			var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                return View("Error");
+            }
 
-			if (user == null)
-			{
-				ViewBag.ErrorMessage = $"The User ID {userId} is not valid";
-				return View("NotFound");
-			}
+            var result = await _userManager.ConfirmEmailAsync(user, token);
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
 
-			var result = await _userManager.ConfirmEmailAsync(user, token);
-
-			if (result.Succeeded)
-			{
-				return View();
-			}
-
-			ViewBag.ErrorTitle = "Email cannot be confirmed";
-			return View("Error");
-		}
-
-		[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

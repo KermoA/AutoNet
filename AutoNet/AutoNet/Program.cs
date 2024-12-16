@@ -1,5 +1,6 @@
 using AutoNet.Core.Domain;
 using AutoNet.Data;
+using AutoNet.Models.Accounts;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,6 +31,8 @@ namespace AutoNet
 
             builder.Services.AddDbContext<AutoNetContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddTransient<ConfirmationEmail>();
 
             var app = builder.Build();
 
