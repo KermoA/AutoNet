@@ -45,5 +45,10 @@ namespace AutoNet.ApplicationServices.Services
                 }
             }
         }
-    }
+
+		public List<FileToDatabase> GetCarFiles()
+		{
+			return _context.FileToDatabases.ToList();
+		}
+	}
 }

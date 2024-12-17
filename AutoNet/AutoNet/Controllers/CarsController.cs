@@ -174,7 +174,7 @@ namespace AutoNet.Controllers
                         Id = x.ImageId,
                         ImageData = x.ImageData,
                         ImageTitle = x.ImageTitle,
-                        CarId = x.CarId
+                        CarId = vm.Id
                     }).ToArray()
             };
 
@@ -201,10 +201,9 @@ namespace AutoNet.Controllers
                 return Unauthorized();
             }
 
-            var car = await _context.Cars
-                .FirstOrDefaultAsync(x => x.Id == id);
+			var car = await _carsServices.DetailAsync(id);
 
-            if (car == null)
+			if (car == null)
             {
                 return NotFound();
             }
@@ -214,23 +213,36 @@ namespace AutoNet.Controllers
                 return Forbid();
             }
 
-            var vm = new CarCreateUpdateViewModel
-            {
-                Id = car.Id,
-                Make = car.Make,
-                Model = car.Model,
-                Year = car.Year,
-                VIN = car.VIN,
-                Mileage = car.Mileage,
-                Power = car.Power,
-                EngineDisplacement = car.EngineDisplacement,
-                Fuel = car.Fuel.ToString(),
-                Transmission = car.Transmission.ToString(),
-                Drivetrain = car.Drivetrain.ToString(),
-                InspectionMonth = car.InspectionMonth,
-                InspectionYear = car.InspectionYear,
-                Description = car.Description
-            };
+			var photos = await _context.FileToDatabases
+				.Where(x => x.CarId == id)
+				.Select(y => new CarImageViewModel
+				{
+					CarId = y.Id,
+					ImageId = y.Id,
+					ImageData = y.ImageData,
+					ImageTitle = y.ImageTitle,
+					Image = string.Format("data:image/gif;base64,{0}", Convert.ToBase64String(y.ImageData))
+				}).ToArrayAsync();
+
+            var vm = new CarCreateUpdateViewModel();
+
+            vm.Id = car.Id;
+            vm.Make = car.Make;
+            vm.Model = car.Model;
+            vm.Year = car.Year;
+            vm.VIN = car.VIN;
+            vm.Mileage = car.Mileage;
+            vm.Power = car.Power;
+            vm.EngineDisplacement = car.EngineDisplacement;
+            vm.Fuel = car.Fuel.ToString();
+            vm.Transmission = car.Transmission.ToString();
+            vm.Drivetrain = car.Drivetrain.ToString();
+            vm.InspectionMonth = car.InspectionMonth;
+            vm.InspectionYear = car.InspectionYear;
+            vm.Description = car.Description;
+            vm.Image.AddRange(photos);
+				
+			
 
             return View("CreateUpdate", vm);
         }

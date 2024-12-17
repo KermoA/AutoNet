@@ -4,6 +4,7 @@ using AutoNet.Core.ServiceInterface;
 using AutoNet.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Xml;
 
 namespace AutoNet.ApplicationServices.Services
 {
@@ -71,10 +72,9 @@ namespace AutoNet.ApplicationServices.Services
             await _context.SaveChangesAsync();
 
             return car;
-        }
+		}
 
-
-        public async Task<Car> Update(CarDto dto)
+		public async Task<Car> Update(CarDto dto)
         {
             var car = await _context.Cars.FirstOrDefaultAsync(x => x.Id == dto.Id);
 
@@ -98,7 +98,12 @@ namespace AutoNet.ApplicationServices.Services
             car.Description = dto.Description;
             car.UpdatedAt = DateTime.UtcNow;
 
-            _context.Cars.Update(car);
+			if (dto.Files != null)
+			{
+				_fileServices.UploadFilesToDatabase(dto, car);
+			}
+
+			_context.Cars.Update(car);
             await _context.SaveChangesAsync();
 
             return car;

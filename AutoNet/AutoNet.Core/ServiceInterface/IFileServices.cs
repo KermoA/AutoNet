@@ -6,5 +6,7 @@ namespace AutoNet.Core.ServiceInterface
     public interface IFileServices
     {
         void UploadFilesToDatabase(CarDto dto, Car domain);
-    }
+        public List<FileToDatabase> GetCarFiles();
+
+	}
 }
