@@ -27,6 +27,7 @@
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
 
+        public List<Guid> ImagesToRemove { get; set; } = new List<Guid>();
 
         public string EngineDisplacementInLiters => $"{EngineDisplacement / 1000.0:F1} L";
     }

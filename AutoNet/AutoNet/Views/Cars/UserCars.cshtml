@@ -28,11 +28,13 @@
                 <td>@car.EngineDisplacementInLiters</td>
                 <td>@car.Power</td>
                 <td>@car.Transmission</td>
-                <td><a asp-action="Update" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-primary">Update</a></td>
                 <td>
-                    <form method="post" asp-action="Delete" asp-route-id="@car.Id">
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this car?')">Delete</button>
-                    </form>
+                    <div class="d-flex">
+                        <a asp-action="Update" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-primary">Update</a>
+                        <form method="post" asp-action="Delete" asp-route-id="@car.Id" class="ps-2">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this car?')">Delete</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
         }

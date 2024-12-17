@@ -95,9 +95,20 @@
     </div>
 
     <div>
-        @foreach (var images in Model.Image)
+        @foreach (var image in Model.Image)
         {
-            <partial name="_Images" model="images" />
+            <div class="col-sm-3 mt-3">
+                <div class="image-container position-relative">
+                    <img class="card-image-top img-fluid" src="@image.Image" asp-append-version="true" />
+
+                    @if (Model.Id.HasValue)
+                    {
+                        <div>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeImage('@image.ImageId')">Remove</button>
+                        </div>
+                    }
+                </div>
+            </div>
         }
     </div>
 
@@ -121,3 +132,26 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<script>
+    function removeImage(imageId) {
+        if (confirm("Are you sure you want to remove this image?")) {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+            fetch(`/cars/RemoveImage`, {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ImageId: imageId })
+            }).then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert("Failed to remove the image.");
+                }
+            }).catch(error => console.error('Error:', error));
+        }
+    }
+</script>

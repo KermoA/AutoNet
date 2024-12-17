@@ -301,6 +301,39 @@ namespace AutoNet.Controllers
 			return RedirectToAction("UserCars");
 		}
 
+		//[HttpPost]
+		//public async Task<IActionResult> RemoveImage(CarImageViewModel vm)
+		//{
+		//	var dto = new FileToDatabaseDto()
+		//	{
+		//		Id = vm.ImageId
+		//	};
+		//	var image = await _fileServices.RemoveImageFromDatabase(dto);
+		//	if (image == null)
+		//	{
+		//		return RedirectToAction(nameof(Index));
+		//	}
+		//	return RedirectToAction(nameof(Index));
+		//}
+
+		[HttpPost]
+		public async Task<IActionResult> RemoveImage([FromBody] CarImageViewModel vm)
+		{
+			if (vm.ImageId == Guid.Empty)
+			{
+				return BadRequest("Invalid Image ID.");
+			}
+
+			var dto = new FileToDatabaseDto { Id = vm.ImageId };
+			var result = await _fileServices.RemoveImageFromDatabase(dto);
+
+			if (result != null)
+			{
+				return Ok();
+			}
+
+			return NotFound();
+		}
 
 		[HttpPost]
 		public async Task<IActionResult> Delete(Guid id)
