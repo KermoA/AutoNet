@@ -247,58 +247,60 @@ namespace AutoNet.Controllers
             return View("CreateUpdate", vm);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Update(CarCreateUpdateViewModel vm)
-        {
-            var userName = User.Identity.Name;
-            var currentUser = await _userManager.FindByNameAsync(userName);
+		[HttpPost]
+		public async Task<IActionResult> Update(CarCreateUpdateViewModel vm)
+		{
+			var userName = User.Identity.Name;
+			var currentUser = await _userManager.FindByNameAsync(userName);
 
-            if (currentUser == null)
-            {
-                return Unauthorized();
-            }
+			if (currentUser == null)
+			{
+				return Unauthorized();
+			}
 
-            var car = await _context.Cars.FirstOrDefaultAsync(x => x.Id == vm.Id);
+			var car = await _context.Cars.FirstOrDefaultAsync(x => x.Id == vm.Id);
 
-            if (car == null)
-            {
-                return NotFound();
-            }
+			if (car == null)
+			{
+				return NotFound();
+			}
 
-            if (car.UserId != currentUser.Id)
-            {
-                return Forbid();
-            }
+			if (car.UserId != currentUser.Id)
+			{
+				return Forbid();
+			}
 
-            var dto = new CarDto()
-            {
-                Id = vm.Id,
-                Make = vm.Make,
-                Model = vm.Model,
-                Year = vm.Year,
-                VIN = vm.VIN,
-                Mileage = vm.Mileage,
-                Power = vm.Power,
-                EngineDisplacement = vm.EngineDisplacement,
-                Fuel = vm.Fuel.ToString(),
-                Transmission = vm.Transmission.ToString(),
-                Drivetrain = vm.Drivetrain.ToString(),
-                InspectionMonth = vm.InspectionMonth,
-                InspectionYear = vm.InspectionYear,
-                Description = vm.Description,
-                CreatedAt = vm.CreatedAt,
-                UpdatedAt = DateTime.UtcNow
-            };
+			var dto = new CarDto()
+			{
+				Id = vm.Id,
+				Make = vm.Make,
+				Model = vm.Model,
+				Year = vm.Year,
+				VIN = vm.VIN,
+				Mileage = vm.Mileage,
+				Power = vm.Power,
+				EngineDisplacement = vm.EngineDisplacement,
+				Fuel = vm.Fuel.ToString(),
+				Transmission = vm.Transmission.ToString(),
+				Drivetrain = vm.Drivetrain.ToString(),
+				InspectionMonth = vm.InspectionMonth,
+				InspectionYear = vm.InspectionYear,
+				Description = vm.Description,
+				CreatedAt = vm.CreatedAt,
+				UpdatedAt = DateTime.UtcNow,
+				Files = vm.Files
+			};
 
-            var result = await _carsServices.Update(dto);
+			var result = await _carsServices.Update(dto);
 
-            if (result == null)
-            {
-                return RedirectToAction("UserCars");
-            }
+			if (result == null)
+			{
+				return RedirectToAction("UserCars");
+			}
 
-            return RedirectToAction("UserCars");
-        }
+			return RedirectToAction("UserCars");
+		}
+
 
 		[HttpPost]
 		public async Task<IActionResult> Delete(Guid id)
