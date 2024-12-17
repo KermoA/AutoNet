@@ -2,6 +2,7 @@
 using AutoNet.Core.Dto;
 using AutoNet.Core.ServiceInterface;
 using AutoNet.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Xml;
 
@@ -45,6 +46,33 @@ namespace AutoNet.ApplicationServices.Services
                 }
             }
         }
+
+        public async Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto dto)
+		{
+			var image = await _context.FileToDatabases
+				.Where(x => x.Id == dto.Id)
+				.FirstOrDefaultAsync();
+
+			_context.FileToDatabases.Remove(image);
+			await _context.SaveChangesAsync();
+
+			return image;
+		}
+
+		public async Task<FileToDatabase> RemoveImagesFromDatabase(FileToDatabaseDto[] dtos)
+		{
+			foreach (var dto in dtos)
+			{
+				var image = await _context.FileToDatabases
+					.Where(x => x.Id == dto.Id)
+					.FirstOrDefaultAsync();
+
+				_context.FileToDatabases.Remove(image);
+				await _context.SaveChangesAsync();
+			}
+
+			return null;
+		}
 
 		public List<FileToDatabase> GetCarFiles()
 		{

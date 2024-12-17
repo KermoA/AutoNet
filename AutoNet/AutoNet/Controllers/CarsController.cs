@@ -300,30 +300,30 @@ namespace AutoNet.Controllers
             return RedirectToAction("UserCars");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser == null)
-            {
-                return Unauthorized();
-            }
+		[HttpPost]
+		public async Task<IActionResult> Delete(Guid id)
+		{
+			var currentUser = await _userManager.GetUserAsync(User);
+			if (currentUser == null)
+			{
+				return Unauthorized();
+			}
 
-            try
-            {
-                var result = await _carsServices.Delete(id, currentUser.Id);
+			try
+			{
+				var result = await _carsServices.Delete(id, currentUser.Id);
 
-                if (result)
-                {
-                    return RedirectToAction("UserCars");
-                }
+				if (result)
+				{
+					return RedirectToAction("UserCars");
+				}
 
-                return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-    }
+				return NotFound();
+			}
+			catch (Exception ex)
+			{
+				return BadRequest(ex.Message);
+			}
+		}
+	}
 }

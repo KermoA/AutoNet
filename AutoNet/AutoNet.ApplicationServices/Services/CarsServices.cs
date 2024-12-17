@@ -119,11 +119,20 @@ namespace AutoNet.ApplicationServices.Services
                 throw new Exception($"Car with ID {carId} not found or does not belong to the current user.");
             }
 
-            _context.Cars.Remove(car);
+			var images = await _context.FileToDatabases
+				.Where(x => x.CarId == carId)
+				.Select(y => new FileToDatabaseDto
+				{
+					Id = y.Id,
+					ImageTitle = y.ImageTitle,
+					CarId = y.CarId
+				}).ToArrayAsync();
 
-            await _context.SaveChangesAsync();
+			await _fileServices.RemoveImagesFromDatabase(images);
+			_context.Cars.Remove(car);
+			await _context.SaveChangesAsync();
 
-            return true;
+			return true;
         }
     }
 }
