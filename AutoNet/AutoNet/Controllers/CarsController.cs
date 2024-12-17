@@ -1,4 +1,5 @@
-﻿using AutoNet.Core.Domain;
+﻿using AutoNet.ApplicationServices.Services;
+using AutoNet.Core.Domain;
 using AutoNet.Core.Dto;
 using AutoNet.Core.ServiceInterface;
 using AutoNet.Data;
@@ -14,17 +15,20 @@ namespace AutoNet.Controllers
         private readonly AutoNetContext _context;
         private readonly ICarsServices _carsServices;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IFileServices _fileServices;
 
         public CarsController
             (
             AutoNetContext context,
             ICarsServices carsServices,
-            UserManager<ApplicationUser> userManager
+            UserManager<ApplicationUser> userManager,
+            IFileServices fileServices
             )
         {
             _context = context;
             _carsServices = carsServices;
             _userManager = userManager;
+            _fileServices = fileServices;
         }
 
         public async Task<IActionResult> Index()
@@ -134,6 +138,17 @@ namespace AutoNet.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CarCreateUpdateViewModel vm)
         {
+            //if (!ModelState.IsValid)
+            //{
+            //    return View("CreateUpdate", vm);
+            //}
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return Unauthorized();
+            }
+
             var dto = new CarDto()
             {
                 Id = vm.Id,
@@ -151,21 +166,29 @@ namespace AutoNet.Controllers
                 InspectionYear = vm.InspectionYear,
                 Description = vm.Description,
                 CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
-
+                UpdatedAt = DateTime.Now,
+                Files = vm.Files,
+                Image = vm.Image
+                    .Select(x => new FileToDatabaseDto
+                    {
+                        Id = x.ImageId,
+                        ImageData = x.ImageData,
+                        ImageTitle = x.ImageTitle,
+                        CarId = x.CarId
+                    }).ToArray()
             };
 
-            var userName = User.Identity.Name;
-
-            var result = await _carsServices.Create(dto, userName);
+            var result = await _carsServices.Create(dto, currentUser.UserName);
 
             if (result == null)
             {
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError(string.Empty, "Failed to create the car.");
+                return View("CreateUpdate", vm);
             }
 
             return RedirectToAction(nameof(Index), vm);
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Update(Guid id)

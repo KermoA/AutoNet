@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace AutoNet.Core.Dto
 {
@@ -18,7 +18,12 @@ namespace AutoNet.Core.Dto
 		public int InspectionMonth { get; set; }
 		public int InspectionYear { get; set; }
 		public string Description { get; set; }
-		public DateTime CreatedAt { get; set; }
+
+        public List<IFormFile> Files { get; set; }
+        public IEnumerable<FileToDatabaseDto> Image { get; set; }
+            = new List<FileToDatabaseDto>();
+
+        public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }
 
 

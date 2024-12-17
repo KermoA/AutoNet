@@ -16,6 +16,10 @@
         public int InspectionMonth { get; set; }
         public int InspectionYear { get; set; }
         public string Description { get; set; }
+
+        public List<IFormFile> Files { get; set; }
+        public List<CarImageViewModel> Image { get; set; }
+            = new List<CarImageViewModel>();
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 

@@ -37,6 +37,7 @@ namespace AutoNet
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddTransient<ConfirmationEmail>();
+            builder.Services.AddScoped<IFileServices, FileServices>();
 
             var app = builder.Build();
 
