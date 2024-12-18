@@ -51,6 +51,7 @@ namespace AutoNet
 				});
 
 			builder.Services.AddScoped<ICarsServices, CarsServices>();
+            builder.Services.AddScoped<IEmailServices, EmailServices>();
 
             builder.Services.AddDbContext<AutoNetContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
