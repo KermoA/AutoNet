@@ -31,7 +31,26 @@ namespace AutoNet
                 .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("CustomEmailConfirmation")
                 .AddDefaultUI();
 
-            builder.Services.AddScoped<ICarsServices, CarsServices>();
+			builder.Services.AddAuthentication()
+				.AddGoogle(googleOptions =>
+				{
+					googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+					googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+				})
+				.AddFacebook(facebookOptions =>
+				{
+					facebookOptions.ClientId = builder.Configuration["Authentication:Facebook:AppId"];
+					facebookOptions.ClientSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+				})
+				.AddGitHub(githubOptions =>
+				{
+					githubOptions.ClientId = builder.Configuration["Authentication:GitHub:ClientId"];
+					githubOptions.ClientSecret = builder.Configuration["Authentication:GitHub:ClientSecret"];
+					githubOptions.Scope.Add("read:user");
+					githubOptions.Scope.Add("user:email");
+				});
+
+			builder.Services.AddScoped<ICarsServices, CarsServices>();
 
             builder.Services.AddDbContext<AutoNetContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

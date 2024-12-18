@@ -50,6 +50,21 @@
 					No External Login
 				</div>
 			}
+			else
+			{
+				<form method="post" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+					<div>
+						@foreach (var provider in Model.ExternalLogins)
+						{
+							<button onclick="externalLogin(@provider.Name, @Model.ReturnUrl)" type="submit" class="btn btn-primary"
+									name="provider" value="@provider.Name"
+									title="Log in using your @provider.DisplayName account">
+								@provider.DisplayName
+							</button>
+						}
+					</div>
+				</form>
+			}
 		}
 	</div>
 </div>

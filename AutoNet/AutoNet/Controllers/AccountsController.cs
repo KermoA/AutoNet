@@ -3,6 +3,7 @@ using AutoNet.Models.Accounts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AutoNet.Controllers
 {
@@ -130,7 +131,74 @@ namespace AutoNet.Controllers
             return View(model);
         }
 
-        [HttpGet]
+		[AllowAnonymous]
+		[HttpPost]
+		public IActionResult ExternalLogin(string provider, string returnUrl)
+		{
+			var redirectUrl = Url.Action(action: "ExternalLoginCallback", controller: "Accounts", values: new { ReturnUrl = returnUrl });
+
+			var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+			return new ChallengeResult(provider, properties);
+		}
+
+		[AllowAnonymous]
+		public async Task<IActionResult> ExternalLoginCallback(string? returnUrl, string? remoteError)
+		{
+			returnUrl = returnUrl ?? Url.Content("~/");
+			LoginViewModel loginViewModel = new LoginViewModel
+			{
+				ReturnUrl = returnUrl,
+				ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+			};
+			if (remoteError != null)
+			{
+				ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+				return View("Login", loginViewModel);
+			}
+
+			var info = await _signInManager.GetExternalLoginInfoAsync();
+			if (info == null)
+			{
+				ModelState.AddModelError(string.Empty, "Error loading external login information.");
+				return View("Login", loginViewModel);
+			}
+
+			var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider,
+				info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+			if (signInResult.Succeeded)
+			{
+				return LocalRedirect(returnUrl);
+			}
+			else
+			{
+				var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+				if (email != null)
+				{
+					var user = await _userManager.FindByEmailAsync(email);
+					if (user == null)
+					{
+						user = new ApplicationUser
+						{
+							UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+							Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+							FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName),
+							LastName = info.Principal.FindFirstValue(ClaimTypes.GivenName)
+						};
+						await _userManager.CreateAsync(user);
+					}
+					await _userManager.AddLoginAsync(user, info);
+
+					await _signInManager.SignInAsync(user, isPersistent: false);
+					return LocalRedirect(returnUrl);
+				}
+				ViewBag.ErrorTitle = $"Email claim not received from: {info.LoginProvider}";
+				ViewBag.ErrorMessage = "Please contact support on info@dotnettutorials.net";
+				return View("Error");
+			}
+		}
+
+		[HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
