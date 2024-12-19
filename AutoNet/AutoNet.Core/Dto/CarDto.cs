@@ -18,6 +18,8 @@ namespace AutoNet.Core.Dto
 		public int InspectionMonth { get; set; }
 		public int InspectionYear { get; set; }
 		public string Description { get; set; }
+        public int Price { get; set; }
+        public int? DiscountPrice { get; set; }
 
         public List<IFormFile> Files { get; set; }
         public IEnumerable<FileToDatabaseDto> Image { get; set; }

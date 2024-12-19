@@ -53,6 +53,8 @@ namespace AutoNet.Controllers
                 InspectionMonth = car.InspectionMonth,
                 InspectionYear = car.InspectionYear,
                 Description = car.Description,
+                Price = car.Price,
+                DiscountPrice = car.DiscountPrice,
                 CreatedAt = car.CreatedAt,
                 UpdatedAt = car.UpdatedAt,
                 UserName = car.User != null ? car.User.UserName : "No User",
@@ -89,6 +91,8 @@ namespace AutoNet.Controllers
                 InspectionMonth = car.InspectionMonth,
                 InspectionYear = car.InspectionYear,
                 Description = car.Description,
+                Price = car.Price,
+                DiscountPrice = car.DiscountPrice,
                 CreatedAt = car.CreatedAt,
                 UpdatedAt = car.UpdatedAt,
                 UserName = car.User.UserName ?? "No User",
@@ -118,6 +122,8 @@ namespace AutoNet.Controllers
                 EngineDisplacement = car.EngineDisplacement,
                 Power = car.Power,
                 Transmission = car.Transmission.ToString(),
+                Price = car.Price,
+                DiscountPrice = car.DiscountPrice,
                 UserName = currentUser.UserName,
                 UserFirstName = currentUser.FirstName,
                 UserLastName = currentUser.LastName
@@ -165,6 +171,8 @@ namespace AutoNet.Controllers
                 InspectionMonth = vm.InspectionMonth,
                 InspectionYear = vm.InspectionYear,
                 Description = vm.Description,
+                Price = vm.Price,
+                DiscountPrice = vm.DiscountPrice,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
                 Files = vm.Files,
@@ -240,6 +248,8 @@ namespace AutoNet.Controllers
             vm.InspectionMonth = car.InspectionMonth;
             vm.InspectionYear = car.InspectionYear;
             vm.Description = car.Description;
+            vm.Price = car.Price;
+            vm.DiscountPrice = car.DiscountPrice;
             vm.Image.AddRange(photos);
 				
 			
@@ -286,6 +296,8 @@ namespace AutoNet.Controllers
 				InspectionMonth = vm.InspectionMonth,
 				InspectionYear = vm.InspectionYear,
 				Description = vm.Description,
+                Price = vm.Price,
+                DiscountPrice = vm.DiscountPrice,
 				CreatedAt = vm.CreatedAt,
 				UpdatedAt = DateTime.UtcNow,
 				Files = vm.Files
@@ -300,21 +312,6 @@ namespace AutoNet.Controllers
 
 			return RedirectToAction("UserCars");
 		}
-
-		//[HttpPost]
-		//public async Task<IActionResult> RemoveImage(CarImageViewModel vm)
-		//{
-		//	var dto = new FileToDatabaseDto()
-		//	{
-		//		Id = vm.ImageId
-		//	};
-		//	var image = await _fileServices.RemoveImageFromDatabase(dto);
-		//	if (image == null)
-		//	{
-		//		return RedirectToAction(nameof(Index));
-		//	}
-		//	return RedirectToAction(nameof(Index));
-		//}
 
 		[HttpPost]
 		public async Task<IActionResult> RemoveImage([FromBody] CarImageViewModel vm)

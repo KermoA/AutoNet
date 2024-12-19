@@ -62,6 +62,8 @@ namespace AutoNet.ApplicationServices.Services
             car.CreatedAt = DateTime.UtcNow;
             car.UpdatedAt = DateTime.UtcNow;
             car.UserId = currentUser.Id;
+            car.Price = dto.Price;
+            car.DiscountPrice = dto.DiscountPrice;
 
             if (dto.Files != null)
             {
@@ -97,6 +99,8 @@ namespace AutoNet.ApplicationServices.Services
             car.InspectionYear = dto.InspectionYear;
             car.Description = dto.Description;
             car.UpdatedAt = DateTime.UtcNow;
+            car.Price = dto.Price;
+            car.DiscountPrice = dto.DiscountPrice;
 
 			if (dto.Files != null)
 			{

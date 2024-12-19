@@ -45,6 +45,8 @@ namespace AutoNet.Core.Domain
 
 		[StringLength(1000)]
 		public string Description { get; set; }
+		public int Price { get; set; }
+		public int? DiscountPrice { get; set; }
 
         public string UserId { get; set; }
         [ForeignKey("UserId")]
