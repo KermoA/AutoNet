@@ -18,7 +18,9 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    background-color: #333333;
+    color: #fff;
+    margin-bottom: 60px;
 }
 
 input.input-validation-error {
@@ -27,4 +29,129 @@ input.input-validation-error {
 
 span.field-validation-error {
     color: #dc3545;
+}
+
+.pagination .active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+button, .btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    button.create, .btn-create {
+        background-color: #4CAF50;
+        color: #fff;
+    }
+
+        button.create:hover, .btn-create:hover {
+            background-color: #45a049;
+        }
+
+    button.update, .btn-update {
+        background-color: #2196F3;
+        color: #fff;
+    }
+
+        button.update:hover, .btn-update:hover {
+            background-color: #1976D2;
+        }
+
+    button.delete, .btn-delete {
+        background-color: #F44336;
+        color: #fff;
+    }
+
+        button.delete:hover, .btn-delete:hover {
+            background-color: #D32F2F;
+        }
+
+    button.register, .btn-register {
+        background-color: #4CAF50;
+        color: #fff;
+    }
+
+        button.register:hover, .btn-register:hover {
+            background-color: #45a049;
+        }
+
+    button.login, .btn-login {
+        background-color: #1976D2;
+        color: #fff;
+    }
+
+        button.login:hover, .btn-login:hover {
+            background-color: #1565C0;
+        }
+
+    button.logout, .btn-logout {
+        background-color: #FF9800;
+        color: #fff;
+    }
+
+        button.logout:hover, .btn-logout:hover {
+            background-color: #FB8C00;
+        }
+
+.car-card {
+    background-color: #333;
+    color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 15px;
+    padding: 10px;
+}
+
+    .car-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .car-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+    .car-card .car-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+
+    .car-card .car-description {
+        font-size: 1rem;
+        color: #ccc;
+        margin-top: 10px;
+    }
+
+    .car-card .car-price {
+        font-size: 1.25rem;
+        color: #ffcc00;
+        margin-top: 10px;
+    }
+
+    .car-card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+.price-text {
+font-size: 2rem;
+color: #888;
+}
+
+.discount-price-text {
+    font-size: 2.5rem;
+    color: red;
 }

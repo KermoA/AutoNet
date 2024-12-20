@@ -1,5 +1,4 @@
-﻿using AutoNet.ApplicationServices.Services;
-using AutoNet.Core.Domain;
+﻿using AutoNet.Core.Domain;
 using AutoNet.Core.Dto;
 using AutoNet.Core.ServiceInterface;
 using AutoNet.Data;
@@ -31,10 +30,17 @@ namespace AutoNet.Controllers
             _fileServices = fileServices;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
+            pageSize = pageSize < 1 ? 10 : pageSize;
+
+            var totalCars = await _context.Cars.CountAsync();
+
             var cars = await _context.Cars
                 .Include(c => c.User)
+                .Include(c => c.Files)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
             var result = cars.Select(car => new CarsIndexViewModel
@@ -52,18 +58,37 @@ namespace AutoNet.Controllers
                 Drivetrain = car.Drivetrain.ToString(),
                 InspectionMonth = car.InspectionMonth,
                 InspectionYear = car.InspectionYear,
-                Description = car.Description,
                 Price = car.Price,
                 DiscountPrice = car.DiscountPrice,
-                CreatedAt = car.CreatedAt,
-                UpdatedAt = car.UpdatedAt,
                 UserName = car.User != null ? car.User.UserName : "No User",
-                UserFirstName = car.User != null ? car.User.FirstName : "No First Name",
-                UserLastName = car.User != null ? car.User.LastName : "No Last Name"
-            });
+                Image = car.Files.FirstOrDefault() != null
+                    ? new List<CarImageViewModel>
+                        {
+                    new CarImageViewModel
+                    { 
+                        Image = Convert.ToBase64String(car.Files.First().ImageData),
+                        ImageTitle = car.Files.First().ImageTitle,
+                        ImageId = car.Files.First().Id,
+                        CarId = car.Files.First().CarId
+                    }
+                        }
+                    : new List<CarImageViewModel>(),
+                CreatedAt = car.CreatedAt,
+                UpdatedAt = car.UpdatedAt
+            }).ToList();
 
-            return View(result);
+            var viewModel = new CarsIndexPaginationViewModel
+            {
+                Cars = result,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling(totalCars / (double)pageSize),
+                PageSize = pageSize
+            };
+
+            return View(viewModel);
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
@@ -109,6 +134,7 @@ namespace AutoNet.Controllers
 
             var userCars = _context.Cars
                 .Where(car => car.UserId == currentUser.Id)
+                .Include(car => car.Files)
                 .ToList();
 
             var vm = userCars.Select(car => new UserCarsViewModel
@@ -122,11 +148,21 @@ namespace AutoNet.Controllers
                 EngineDisplacement = car.EngineDisplacement,
                 Power = car.Power,
                 Transmission = car.Transmission.ToString(),
+                Drivetrain = car.Drivetrain.ToString(),
                 Price = car.Price,
                 DiscountPrice = car.DiscountPrice,
                 UserName = currentUser.UserName,
                 UserFirstName = currentUser.FirstName,
-                UserLastName = currentUser.LastName
+                UserLastName = currentUser.LastName,
+                Image = car.Files.FirstOrDefault() != null
+                    ? new CarImageViewModel
+                    {
+                        Image = Convert.ToBase64String(car.Files.First().ImageData),
+                        ImageTitle = car.Files.First().ImageTitle,
+                        ImageId = car.Files.First().Id,
+                        CarId = car.Files.First().CarId
+                    }
+                    : null
             }).ToList();
 
             return View(vm);
@@ -144,11 +180,6 @@ namespace AutoNet.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CarCreateUpdateViewModel vm)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View("CreateUpdate", vm);
-            //}
-
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser == null)
             {

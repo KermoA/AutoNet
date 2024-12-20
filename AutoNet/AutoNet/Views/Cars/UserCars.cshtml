@@ -2,42 +2,44 @@
 
 <h1>My Cars</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Make</th>
-            <th>Model</th>
-            <th>Year</th>
-            <th>Fuel</th>
-            <th>Mileage</th>
-            <th>Engine</th>
-            <th>Power</th>
-            <th>Transmission</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var car in Model)
-        {
-            <tr>
-                <td>@car.Make</td>
-                <td>@car.Model</td>
-                <td>@car.Year</td>
-                <td>@car.Fuel</td>
-                <td>@car.Mileage</td>
-                <td>@car.EngineDisplacementInLiters</td>
-                <td>@car.Power</td>
-                <td>@car.Transmission</td>
-                <td>
-                    <div class="d-flex">
-                        <a asp-action="Update" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-primary">Update</a>
-                        <form method="post" asp-action="Delete" asp-route-id="@car.Id" class="ps-2">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this car?')">Delete</button>
-                        </form>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@foreach (var car in Model)
+{
+    <div class="container col-lg-12">
+        <div class="car-card">
+            <div class="row">
+                <div class="col-12 col-sm-4">
 
+                    @if (car.Image != null)
+                    {
+                        <img src="data:image/jpeg;base64,@car.Image.Image" alt="Car Image" class="img-fluid rounded" />
+                    }
+                    else
+                    {
+                        <img src="path/to/default/image.jpg" alt="No Image Available" class="img-fluid rounded" />
+                    }
+                </div>
+                <div class="col-12 col-sm-8">
+                    <div class="row">
+                        <h3 class="mb-3">@car.Make @car.Model @car.EngineDisplacementInLiters @car.Power kW</h3>
+                        <div class="col-6 col-sm-5">
+                            <div><strong>Year:</strong> @car.Year</div>
+                            <div><strong>Mileage:</strong> @car.Mileage km</div>
+                        </div>
+                        <div class="col-6 col-sm-5">
+                            <div><strong>Fuel:</strong> @car.Fuel</div>
+                            <div><strong>Transmission:</strong> @car.Transmission</div>
+                            <div><strong>Drivetrain:</strong> @car.Drivetrain</div>
+                        </div>
+                        <div class="col-12 col-sm-2">
+                            <a asp-action="Update" asp-controller="Cars" asp-route-id="@car.Id" class="btn btn-update w-100">Update</a>
+                            <form method="post" asp-action="Delete" asp-route-id="@car.Id">
+                                <button type="submit" class="btn btn-delete mt-2 w-100" onclick="return confirm('Are you sure you want to delete this car?')">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}

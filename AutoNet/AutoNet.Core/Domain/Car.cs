@@ -48,6 +48,8 @@ namespace AutoNet.Core.Domain
 		public int Price { get; set; }
 		public int? DiscountPrice { get; set; }
 
+        public ICollection<FileToDatabase> Files { get; set; }
+
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public ApplicationUser User { get; set; }

@@ -25,6 +25,13 @@
                             <strong>Inspection:</strong>
                             @Model.InspectionMonth / @Model.InspectionYear
                         </li>
+                        <li class="list-group-item"><strong>Price:</strong> @Model.Price €</li>
+                        <li class="list-group-item">
+                            <strong>Discounted Price:</strong>
+                            @(Model.DiscountPrice.HasValue
+                                ? Model.DiscountPrice.Value.ToString() + " €"
+                                : "N/A")
+                        </li>
                     </ul>
                 </div>
                 <div class="col-md-6">

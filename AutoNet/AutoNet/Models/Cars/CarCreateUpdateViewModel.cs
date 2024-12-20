@@ -19,7 +19,7 @@
         public int Price { get; set; }
         public int? DiscountPrice { get; set; }
 
-        public List<IFormFile> Files { get; set; }
+        public List<IFormFile>? Files { get; set; }
         public List<CarImageViewModel> Image { get; set; }
             = new List<CarImageViewModel>();
         public DateTime CreatedAt { get; set; }

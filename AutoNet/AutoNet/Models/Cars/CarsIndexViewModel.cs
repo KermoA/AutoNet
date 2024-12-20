@@ -18,6 +18,8 @@
 		public string Description { get; set; }
         public int Price { get; set; }
         public int? DiscountPrice { get; set; }
+        public List<CarImageViewModel> Image { get; set; }
+			= new List<CarImageViewModel>();
         public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }
 
@@ -26,6 +28,6 @@
 		public string UserLastName { get; set; }
 
 
-		public string EngineDisplacementInLiters => $"{EngineDisplacement / 1000.0:F1} L";
+		public string EngineDisplacementInLiters => $"{EngineDisplacement / 1000.0:F1}";
 	}
 }
