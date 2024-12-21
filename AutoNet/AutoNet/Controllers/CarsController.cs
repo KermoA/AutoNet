@@ -93,13 +93,18 @@ namespace AutoNet.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            var car = await _carsServices.DetailAsync(id);
+            // Retrieve the car details including related user and files
+            var car = await _context.Cars
+                .Include(c => c.User)
+                .Include(c => c.Files)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
             if (car == null)
             {
                 return View("Error");
             }
 
+            // Map car details to the view model
             var vm = new CarDetailsViewModel
             {
                 Id = car.Id,
@@ -120,9 +125,16 @@ namespace AutoNet.Controllers
                 DiscountPrice = car.DiscountPrice,
                 CreatedAt = car.CreatedAt,
                 UpdatedAt = car.UpdatedAt,
-                UserName = car.User.UserName ?? "No User",
-                UserFirstName = car.User.FirstName ?? "No First Name",
-                UserLastName = car.User.LastName ?? "No Last Name"
+                UserName = car.User?.UserName ?? "No User",
+                UserFirstName = car.User?.FirstName ?? "No First Name",
+                UserLastName = car.User?.LastName ?? "No Last Name",
+                Images = car.Files.Select(file => new CarImageViewModel
+                {
+                    ImageId = file.Id,
+                    CarId = file.CarId,
+                    ImageTitle = file.ImageTitle,
+                    Image = $"data:image/png;base64,{Convert.ToBase64String(file.ImageData)}"
+                }).ToList()
             };
 
             return View(vm);

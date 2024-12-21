@@ -5,54 +5,81 @@
 }
 
 <div class="container mt-5">
-    <div class="card">
+
+    <div class="card car-details-card">
         <div class="card-header">
-            <h2>@Model.Make @Model.Model (@Model.Year)</h2>
+            <h2>@Model.Make @Model.Model @Model.EngineDisplacementInLiters @Model.Power kW</h2>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <h4>General Information</h4>
-                    <ul class="list-group">
-                        <li class="list-group-item"><strong>VIN:</strong> @Model.VIN</li>
-                        <li class="list-group-item"><strong>Mileage:</strong> @Model.Mileage km</li>
-                        <li class="list-group-item"><strong>Power:</strong> @Model.Power HP</li>
-                        <li class="list-group-item"><strong>Engine Displacement:</strong> @Model.EngineDisplacement cc</li>
-                        <li class="list-group-item"><strong>Fuel:</strong> @Model.Fuel</li>
-                        <li class="list-group-item"><strong>Transmission:</strong> @Model.Transmission</li>
-                        <li class="list-group-item"><strong>Drivetrain:</strong> @Model.Drivetrain</li>
-                        <li class="list-group-item">
-                            <strong>Inspection:</strong>
-                            @Model.InspectionMonth / @Model.InspectionYear
-                        </li>
-                        <li class="list-group-item"><strong>Price:</strong> @Model.Price €</li>
-                        <li class="list-group-item">
-                            <strong>Discounted Price:</strong>
-                            @(Model.DiscountPrice.HasValue
-                                ? Model.DiscountPrice.Value.ToString() + " €"
-                                : "N/A")
-                        </li>
-                    </ul>
+            <div class="row mb-3">
+                <h4 class="card-header mb-3">General Information</h4>
+                    <div class="col-6 col-sm-3">
+                        <p><strong>Initial Registration Year</strong></p>
+                        <p><strong>VIN</strong></p>
+                        <p><strong>Mileage</strong></p>
+                        <p><strong>Power</strong></p>
+                        <p><strong>Engine Displacement</strong></p>
+                        <p><strong>Fuel</strong></p>
+                        <p><strong>Transmission</strong></p>
+                        <p><strong>Drivetrain</strong></p>
+                        <p><strong>Inspection Valid</strong></p>
+                        <p><strong>Price</strong></p>
+                        <p><strong>Discounted Price</strong></p>
+                    </div>
+                <div class="col-6 col-sm-3 text-end">
+                    <p>@Model.Year</p>
+                    <p>@Model.VIN</p>
+                    <p>@Model.Mileage km</p>
+                    <p>@Model.Power kW</p>
+                    <p>@Model.EngineDisplacement cc</p>
+                    <p>@Model.Fuel</p>
+                    <p>@Model.Transmission</p>
+                    <p>@Model.Drivetrain</p>
+                    <p>@Model.InspectionMonth.@Model.InspectionYear</p>
+                    <p>@Model.Price €</p>
+                    <p>
+                        @(Model.DiscountPrice.HasValue
+                            ? Model.DiscountPrice.Value.ToString() + " €"
+                            : "N/A")
+                    </p>
                 </div>
-                <div class="col-md-6">
-                    <h4>Additional Information</h4>
-                    <ul class="list-group">
-                        <li class="list-group-item"><strong>Description:</strong> @Model.Description</li>
-                        <li class="list-group-item"><strong>Created At:</strong> @Model.CreatedAt.ToString("yyyy-MM-dd HH:mm")</li>
-                        <li class="list-group-item"><strong>Updated At:</strong> @Model.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</li>
-                    </ul>
+                <div class="col-12 col-sm-6">
+                    @if (Model.Images?.Any() == true)
+                    {
+                        <div>
+                            <img src="@Model.Images.First().Image" alt="@Model.Images.First().ImageTitle" class="large-car-image" />
+                        </div>
+                        <div class="row smaller-car-images mt-1">
+                            @foreach (var image in Model.Images.Skip(1))
+                            {
+                                <div class="col-3">
+                                    <img src="@image.Image" alt="@image.ImageTitle" class="small-car-image" />
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No images available.</p>
+                    }
                 </div>
             </div>
-            <hr>
-            <h4>Owner Information</h4>
-            <ul class="list-group">
-                <li class="list-group-item"><strong>Username:</strong> @Model.UserName</li>
-                <li class="list-group-item"><strong>First Name:</strong> @Model.UserFirstName</li>
-                <li class="list-group-item"><strong>Last Name:</strong> @Model.UserLastName</li>
-            </ul>
-        </div>
-        <div class="card-footer">
-            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            <div class="row mb-3">
+                <h4 class="card-header mb-3">Description</h4>
+                <div class="col-12">
+                    <p>@Model.Description</p>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <h4 class="card-header mb-3">Seller Information</h4>
+                <div class="col-12">
+                    <p>@Model.UserFirstName @Model.UserLastName</p>
+                    <p>@Model.UserName</p>
+                </div>
+            </div>
+            <div>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
         </div>
     </div>
 </div>
