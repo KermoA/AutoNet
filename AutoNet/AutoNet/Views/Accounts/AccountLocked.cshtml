@@ -1,6 +1,19 @@
-﻿<h3 class="text-danger">
-	Your account is locked, please try again after or you may
-	<a asp-action="ForgotPassword" asp-controller="Accounts">
-		reset your password by clicking here
-	</a>
-</h3>
+﻿@{
+	ViewData["Title"] = "Account Locked";
+}
+
+<div class="container col-12">
+	<div class="row">
+		<div class="col-12 col-sm-8" style="background-image: url('/images/cars-login.jpg'); background-size: cover; background-position: center;" )">
+		</div>
+		<div class="col-12 col-sm-4">
+			<div class="text-center">
+				<h3 class="text-danger">
+					Your account has been locked due to multiple failed login attempts or other security reasons.
+				</h3>
+				<p>Please try again after some time. If you are unable to access your account, you can</p>
+				<p><a asp-action="ForgotPassword" asp-controller="Accounts" class="btn btn-link">reset your password</a> by clicking here.</p>
+			</div>
+		</div>
+	</div>
+</div>

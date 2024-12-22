@@ -4,45 +4,43 @@
 	ViewBag.Title = "User Login";
 }
 
-<div>
-	<div class="row col-md-12">
-		<h1 class="mt-2 mb-2">Local Account Login</h1>
-		<hr />
-		<form method="post">
-			<div asp-validation-summary="All" class="text-danger"></div>
-			<div class="form-group mb-2">
-				<input asp-for="Email" class="form-control" placeholder="Email" />
-				<span asp-validation-for="Email" class="text-danger"></span>
-			</div>
+<div class="container col-12">
+	<div class="row">
+		<div class="col-12 col-sm-8" style="background-image: url('/images/cars-login.jpg'); background-size: cover; background-position: center;" )">
+		</div>
+		<div class="col-12 col-sm-4">
+			<form method="post">
+				<div asp-validation-summary="All" class="text-danger"></div>
+				<div class="form-group mb-2">
+					<input asp-for="Email" class="form-control" placeholder="Email" />
+					<span asp-validation-for="Email" class="text-danger"></span>
+				</div>
 
-			<div class="form-group mb-2">
-				<input asp-for="Password" class="form-control" placeholder="Password" />
-				<span asp-validation-for="Password" class="text-danger"></span>
-			</div>
+				<div class="form-group mb-2">
+					<input asp-for="Password" class="form-control" placeholder="Password" />
+					<span asp-validation-for="Password" class="text-danger"></span>
+				</div>
 
-			<div class="form-group mb-2">
-				<div class="d-flex justify-content-between align-items-center">
-					<div class="custom-checkbox">
-						<label asp-for="RememberMe">
-							<input asp-for="RememberMe" />
-							@Html.DisplayNameFor(m => m.RememberMe)
-						</label>
-					</div>
-					<div>
-						<a asp-action="ForgotPassword" class="text-decoration-none">Forgot Password?</a>
+				<div class="form-group mb-2">
+					<div class="d-flex justify-content-between align-items-center">
+						<div class="custom-checkbox">
+							<label asp-for="RememberMe">
+								<input asp-for="RememberMe" />
+								@Html.DisplayNameFor(m => m.RememberMe)
+							</label>
+						</div>
+						<div>
+							<a asp-action="ForgotPassword" class="text-decoration-none">Forgot Password?</a>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<button type="submit" class="btn btn-create">
-				Login
-			</button>
-		</form>
-	</div>
-
-	<div class="col-md-12 mb-3 mt-4">
-		<h1>External Login</h1>
-		<hr />
+				<button type="submit" class="btn btn-create w-100">
+					Sign In
+				</button>
+			</form>
+			<p class="text-center">Don't have an account? <a asp-action="Register" asp-controller="Accounts">Sign Up</a></p>
+		<p class="text-center">Or with</p>
 		@{
 			if (Model.ExternalLogins.Count == 0)
 			{
@@ -54,17 +52,36 @@
 			{
 				<form method="post" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
 					<div>
-						@foreach (var provider in Model.ExternalLogins)
-						{
-							<button onclick="externalLogin(@provider.Name, @Model.ReturnUrl)" type="submit" class="btn btn-primary"
-									name="provider" value="@provider.Name"
-									title="Log in using your @provider.DisplayName account">
-								@provider.DisplayName
-							</button>
-						}
-					</div>
+							<div class="d-flex flex-wrap gap-2">
+							@foreach (var provider in Model.ExternalLogins)
+							{
+								var buttonClass = provider.Name switch
+								{
+									"Google" => "background-color: #dd4b39;",
+									"Facebook" => "background-color: #3b5998;",
+									"GitHub" => "background-color: #333333;",
+									_ => "background-color: #6c757d;"
+								};
+
+								var iconClass = provider.Name switch
+								{
+									"Google" => "fab fa-google me-2",
+									"Facebook" => "fab fa-facebook-f me-2",
+									"GitHub" => "fab fa-github me-2",
+									_ => "fas fa-globe me-2"
+								};
+
+								<button onclick="externalLogin(@provider.Name, @Model.ReturnUrl)" type="submit" class="btn btn-primary w-100"
+										style="@buttonClass" name="provider" value="@provider.Name"
+										title="Log in using your @provider.DisplayName account">
+									<i class="@iconClass"></i> @provider.DisplayName
+								</button>
+							}
+						</div>
+					</div>	
 				</form>
 			}
 		}
+		</div>
 	</div>
 </div>
