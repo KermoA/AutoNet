@@ -19,59 +19,88 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light box-shadow mb-3 navbar-overlay">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AutoNet</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <a class="navbar-brand text-white px-5" asp-area="" asp-controller="Home" asp-action="Index">AutoNet</a>
 
-                        @if(User.Identity.IsAuthenticated)
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1 justify-content-center">
+                        @if (User.Identity.IsAuthenticated)
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="Index">All Cars</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="UserCars">My Cars</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="Create">Create</a>
-                        </li>
-                        <li>
-                            <form asp-controller="Accounts" asp-action="Logout" method="post">
-                                <button type="submit" class="btn btn-logout">Logout</button>
-                            </form>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Cars" asp-action="Index">All Cars</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Cars" asp-action="UserCars">My Cars</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Cars" asp-action="Create">Create</a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa-solid fa-circle-user fa-2x"></i>
+                                </a>
+                                <ul class="dropdown-menu account-info" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <div class="card account-info-card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-2 d-flex justify-content-center align-items-center">
+														<p class="mb-0"><i class="fa-solid fa-circle-user fa-2x"></i></p>
+                                                    </div>
+                                                    <div class="col-10">
+                                                        <p class="mb-0">@user?.FirstName @user?.LastName</p>
+                                                        <p class="mb-2">@user?.Email</p>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="col-12">
+                                                        <a class="dropdown-item text-center" asp-controller="Cars" asp-action="UserCars">My Cars</a>
+                                                        <a class="dropdown-item text-center" asp-controller="Accounts" asp-action="ChangePassword">Change Password</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+
+
+                            <li class="nav-item">
+                                <form asp-controller="Accounts" asp-action="Logout" method="post">
+                                    <button type="submit" class="btn btn-logout">Logout</button>
+                                </form>
                             </li>
                         }
                         else
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cars" asp-action="Index">Cars</a>
-                        </li>
-                        <li class="nav-item">
-                            <form asp-controller="Accounts" asp-action="Register" method="get">
-                                <button type="submit" class="btn btn-register">Register</button>
-                            </form>
-                        </li>
-                        <li class="nav-item">
-                            <form asp-controller="Accounts" asp-action="Login" method="get">
-                                <button type="submit" class="btn btn-login">Login</button>
-                            </form>
-                        </li>                            
+                            <li class="nav-item">
+                                <form asp-controller="Accounts" asp-action="Register" method="get">
+                                    <button type="submit" class="btn btn-register me-2">Register</button>
+                                </form>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Accounts" asp-action="Login" method="get">
+                                    <button type="submit" class="btn btn-login">Login</button>
+                                </form>
+                            </li>
                         }
                     </ul>
                 </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             </div>
         </nav>
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">

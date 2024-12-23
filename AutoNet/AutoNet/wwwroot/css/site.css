@@ -21,7 +21,27 @@ body {
     background-color: #222;
     color: #fff;
     margin-bottom: 60px;
+    margin-top: 70px;
 }
+
+.navbar-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #4a4a4a;
+    z-index: 2;
+    display: flex;
+}
+
+.nav-link {
+    color: white;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+    .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
 
 input.input-validation-error {
     border-color: #dc3545;
@@ -236,8 +256,31 @@ color: #888;
 
     .login-image {
         width: 100%;
-        height: 100%; /* Ensures the image height matches the column */
+        height: 100%;
         object-fit: cover;
     }
 
+}
+
+.account-info {
+    min-width: 250px;
+    padding: 0;
+    border-radius: .5rem;
+    border: 1px solid #ddd;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.account-info-card {
+    background: #333333;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    border-radius: .5rem;
+}
+
+.navbar-nav .dropdown-toggle::after {
+    display: none;
 }
