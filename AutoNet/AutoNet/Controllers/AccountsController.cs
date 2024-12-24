@@ -33,6 +33,7 @@ namespace AutoNet.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            ViewData["IsRegisterPage"] = true;
             return View();
         }
 
@@ -86,6 +87,7 @@ namespace AutoNet.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string? returnUrl)
         {
+            ViewData["IsLoginPage"] = true;
             LoginViewModel vm = new()
             {
                 ReturnUrl = returnUrl,

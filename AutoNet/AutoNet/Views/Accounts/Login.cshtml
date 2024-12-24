@@ -40,7 +40,9 @@
 				</button>
 			</form>
 			<p class="text-center">Don't have an account? <a asp-action="Register" asp-controller="Accounts">Sign Up</a></p>
-		<p class="text-center">Or with</p>
+			<div class="line-with-text">
+				<span>OR</span>
+			</div>
 		@{
 			if (Model.ExternalLogins.Count == 0)
 			{
@@ -74,7 +76,7 @@
 								<button onclick="externalLogin(@provider.Name, @Model.ReturnUrl)" type="submit" class="btn btn-primary w-100"
 										style="@buttonClass" name="provider" value="@provider.Name"
 										title="Log in using your @provider.DisplayName account">
-									<i class="@iconClass"></i> @provider.DisplayName
+									<i class="@iconClass"></i> Continue with @provider.DisplayName
 								</button>
 							}
 						</div>

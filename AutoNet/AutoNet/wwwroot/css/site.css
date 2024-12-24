@@ -43,10 +43,6 @@ body {
         color: red !important;
     }
 
-    .dropdown-item:hover {
-        background-color: #3a3a3a;
-    }
-
 @media (max-width: 576px) {
     .navbar-collapse {
         display: flex;
@@ -347,4 +343,69 @@ color: #888;
         }
 }
 
+.line-with-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+    .line-with-text::before,
+    .line-with-text::after {
+        content: "";
+        flex-grow: 1;
+        border-top: 1px solid white;
+        margin: 0 10px;
+    }
+
+    .line-with-text span {
+        padding: 0 10px;
+        font-weight: bold;
+        color: white;
+    }
+
+.account-modal-header {
+    color: white;
+    background-color: #2a2a2a;
+    border-bottom: 1px solid red;
+}
+.account-modal-body {
+    color: white;
+    background-color: #222;
+}
+
+.account-modal-link {
+    display: block;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    color: white;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+    .account-modal-link:hover {
+        background-color: #3a3a3a;
+        color: white;
+    }
+
+@media (min-width: 768px) {
+    .modal-dialog.account-modal {
+        position: absolute;
+        min-width: 270px;
+        right: 16px;
+        left: auto;
+        top: 40px;
+    }
+}
+
+@media (max-width: 767px) {
+    .modal-dialog.account-modal {
+        position: relative;
+        margin: auto;
+        margin-top: 60px;
+    }
+}
 
