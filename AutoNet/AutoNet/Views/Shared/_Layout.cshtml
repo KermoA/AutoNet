@@ -19,34 +19,42 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-light box-shadow mb-3 navbar-overlay">
+        <nav class="navbar navbar-expand-sm navbar-light box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand text-white px-5" asp-area="" asp-controller="Home" asp-action="Index">AutoNet</a>
-
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 justify-content-center">
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index") ? "active" : "")"
+                                   asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Cars" asp-action="Index">All Cars</a>
+                                <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Cars" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index") ? "active" : "")"
+                                   asp-area="" asp-controller="Cars" asp-action="Index">All Cars</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Cars" asp-action="UserCars">My Cars</a>
+                                <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Cars" && ViewContext.RouteData.Values["Action"]?.ToString() == "UserCars") ? "active" : "")"
+                                   asp-area="" asp-controller="Cars" asp-action="UserCars">My Cars</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Cars" asp-action="Create">Create</a>
+                                <a class="nav-link @((ViewContext.RouteData.Values["Controller"]?.ToString() == "Cars" && ViewContext.RouteData.Values["Action"]?.ToString() == "Create") ? "active" : "")"
+                                   asp-area="" asp-controller="Cars" asp-action="Create">Create</a>
                             </li>
                         }
                     </ul>
-                    <ul class="navbar-nav ms-auto">
+
+                    <ul class="navbar-nav">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item dropdown">
+                            <li class="nav-item dropdown me-2">
                                 <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-circle-user fa-2x"></i>
+                                    <i class="fa-solid fa-circle-user fa-2x text-white"></i>
                                 </a>
                                 <ul class="dropdown-menu account-info" aria-labelledby="navbarDropdown">
                                     <li>
@@ -54,7 +62,7 @@
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-2 d-flex justify-content-center align-items-center">
-														<p class="mb-0"><i class="fa-solid fa-circle-user fa-2x"></i></p>
+                                                        <p class="mb-0"><i class="fa-solid fa-circle-user fa-2x"></i></p>
                                                     </div>
                                                     <div class="col-10">
                                                         <p class="mb-0">@user?.FirstName @user?.LastName</p>
@@ -62,8 +70,8 @@
                                                     </div>
                                                     <hr />
                                                     <div class="col-12">
-                                                        <a class="dropdown-item text-center" asp-controller="Cars" asp-action="UserCars">My Cars</a>
-                                                        <a class="dropdown-item text-center" asp-controller="Accounts" asp-action="ChangePassword">Change Password</a>
+                                                        <a class="dropdown-item text-center text-white" asp-controller="Cars" asp-action="UserCars">My Cars</a>
+                                                        <a class="dropdown-item text-center text-white" asp-controller="Accounts" asp-action="ChangePassword">Change Password</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -71,7 +79,6 @@
                                     </li>
                                 </ul>
                             </li>
-
 
                             <li class="nav-item">
                                 <form asp-controller="Accounts" asp-action="Logout" method="post">
@@ -94,12 +101,9 @@
                         }
                     </ul>
                 </div>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
             </div>
         </nav>
+
 
     </header>
     <div class="container">
