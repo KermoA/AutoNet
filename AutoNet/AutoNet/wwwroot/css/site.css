@@ -478,3 +478,20 @@ input[type="checkbox"].custom-checkbox-input:checked + .custom-checkbox-box {
     border-color: #80deea;
 }
 
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+    .toggle-password:hover,
+    .toggle-password:focus {
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        cursor: pointer;
+    }

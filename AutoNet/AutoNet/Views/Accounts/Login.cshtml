@@ -16,10 +16,14 @@
 					<span asp-validation-for="Email" class="text-danger"></span>
 				</div>
 
-				<div class="form-group mb-2">
-					<input asp-for="Password" class="form-control input-custom-background" placeholder="Password" />
+				<div class="form-group mb-2 position-relative">
+					<input asp-for="Password" id="passwordInput" class="form-control input-custom-background" placeholder="Password" type="password" />
 					<span asp-validation-for="Password" class="text-danger"></span>
+					<button type="button" class="btn btn-outline-secondary btn-sm toggle-password" onclick="togglePasswordVisibility()">
+						<i class="bi bi-eye"></i>
+					</button>
 				</div>
+
 
 				<div class="form-group mb-2">
 					<div class="d-flex justify-content-between align-items-center">
