@@ -1,0 +1,62 @@
+﻿@model IEnumerable<AutoNet.Core.Domain.Car>
+
+<h2>Search Results</h2>
+<div class="container">
+    @foreach (var car in Model)
+    {
+        <div class="container col-lg-12">
+            <a asp-action="Details" asp-controller="Cars" asp-route-id="@car.Id" class="car-card-link">
+                <div class="car-card">
+                    <div class="row">
+                        <div class="col-12 col-sm-4">
+@*                             @if (car.FirstCarImage != null)
+                            {
+                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(car.FirstCarImage)" alt="Car Image" />
+                            } *@
+@*                             @if (car.Image.Any())
+                            {
+                                <img src="data:image/jpeg;base64,@car.Image.First().Image" alt="Car Image" class="img-fluid rounded" />
+                            }
+                            else
+                            {
+                                <img src="path/to/default/image.jpg" alt="No Image Available" class="img-fluid rounded" />
+                            } *@
+                        </div>
+                        <div class="col-12 col-sm-8">
+                            <div class="row">
+                                <h3 class="mb-3">@car.Make @car.Model @car.EngineDisplacementInLiters @car.Power kW</h3>
+                                <div class="col-6 col-sm-4">
+                                    <div><strong>Year:</strong> @car.Year</div>
+                                    <div><strong>Mileage:</strong> @car.Mileage km</div>
+                                </div>
+                                <div class="col-6 col-sm-5">
+                                    <div><strong>Fuel:</strong> @car.Fuel</div>
+                                    <div><strong>Transmission:</strong> @car.Transmission</div>
+                                    <div><strong>Drivetrain:</strong> @car.Drivetrain</div>
+                                </div>
+                                <div class="col-12 col-sm-3">
+                                    @if (car.DiscountPrice.HasValue)
+                                    {
+                                        <div>
+                                            <span class="price-text" style="text-decoration: line-through;">@car.Price €</span>
+                                        </div>
+                                        <div>
+                                            <span class="discount-price-text"><strong>@car.DiscountPrice €</strong></span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div>
+                                            <span class="price-text"><strong>@car.Price €</strong></span>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+
+</div>

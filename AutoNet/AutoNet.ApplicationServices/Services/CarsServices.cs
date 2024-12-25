@@ -1,10 +1,10 @@
 ﻿using AutoNet.Core.Domain;
 using AutoNet.Core.Dto;
 using AutoNet.Core.ServiceInterface;
+using AutoNet.Core.ViewModels;
 using AutoNet.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Xml;
 
 namespace AutoNet.ApplicationServices.Services
 {
@@ -137,6 +137,66 @@ namespace AutoNet.ApplicationServices.Services
 			await _context.SaveChangesAsync();
 
 			return true;
+        }
+
+        public async Task<List<string>> GetMakesAsync()
+        {
+            return await _context.Cars.Select(c => c.Make).Distinct().ToListAsync();
+        }
+
+        public async Task<List<string>> GetModelsByMakeAsync(string make)
+        {
+            return await _context.Cars
+                .Where(c => c.Make == make)
+                .Select(c => c.Model)
+                .Distinct()
+                .ToListAsync();
+        }
+
+        public async Task<List<Car>> SearchCarsAsync(CarSearchViewModel searchModel)
+        {
+            var query = _context.Cars.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchModel.SelectedMake))
+                query = query.Where(c => c.Make == searchModel.SelectedMake);
+
+            if (!string.IsNullOrEmpty(searchModel.SelectedModel))
+                query = query.Where(c => c.Model == searchModel.SelectedModel);
+
+            if (searchModel.YearFrom.HasValue)
+                query = query.Where(c => c.Year >= searchModel.YearFrom);
+
+            if (searchModel.YearTo.HasValue)
+                query = query.Where(c => c.Year <= searchModel.YearTo);
+
+            if (searchModel.PowerFrom.HasValue)
+                query = query.Where(c => c.Power >= searchModel.PowerFrom);
+
+            if (searchModel.PowerTo.HasValue)
+                query = query.Where(c => c.Power <= searchModel.PowerTo);
+
+            if (searchModel.PriceFrom.HasValue)
+                query = query.Where(c => c.Price >= searchModel.PriceFrom);
+
+            if (searchModel.PriceTo.HasValue)
+                query = query.Where(c => c.Price <= searchModel.PriceTo);
+
+            if (searchModel.MileageFrom.HasValue)
+                query = query.Where(c => c.Mileage >= searchModel.MileageFrom);
+
+            if (searchModel.MileageTo.HasValue)
+                query = query.Where(c => c.Mileage <= searchModel.MileageTo);
+
+            if (searchModel.Fuel.HasValue)
+                query = query.Where(c => c.Fuel == searchModel.Fuel);
+
+            if (searchModel.Transmission.HasValue)
+                query = query.Where(c => c.Transmission == searchModel.Transmission);
+
+            if (searchModel.Drivetrain.HasValue)
+                query = query.Where(c => c.Drivetrain == searchModel.Drivetrain);
+
+            return await query.ToListAsync();
         }
     }
 }

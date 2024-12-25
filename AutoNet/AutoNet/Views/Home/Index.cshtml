@@ -1,8 +1,109 @@
-﻿@{
+﻿@model AutoNet.Core.ViewModels.CarSearchViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <form asp-action="Search" method="post">
+        <div class="col-3">
+
+            <div class="col-12">
+                <label>Make:</label>
+                <select id="Make" name="SelectedMake" asp-items="@(new SelectList(Model.Makes))" class="form-control input-custom-background">
+                    <option value="">Select Make</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <label>Model:</label>
+                <select id="Model" name="SelectedModel" class="form-control input-custom-background">
+                    <option value="">Select Model</option>
+                </select>
+            </div>
+            <div class="row d-flex justify-content-between">
+                <div class="col-6">
+                    <label>Year From:</label>
+                    <input type="number" name="YearFrom" class="form-control input-custom-background"/>
+                </div>
+
+                <div class="col-6">
+                    <label>Year To:</label>
+                    <input type="number" name="YearTo" class="form-control input-custom-background"/>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between">
+                <div class="col-6">
+                    <label>Power From:</label>
+                    <input type="number" name="PowerFrom" class="form-control input-custom-background" />
+                </div>
+
+                <div class="col-6">
+                    <label>Power To:</label>
+                    <input type="number" name="PowerTo" class="form-control input-custom-background" />
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between">
+                <div class="col-6">
+                    <label>Price From:</label>
+                    <input type="number" name="PriceFrom" class="form-control input-custom-background" />
+                </div>
+
+                <div class="col-6">
+                    <label>Price To:</label>
+                    <input type="number" name="PriceTo" class="form-control input-custom-background" />
+                </div>
+            </div>
+            <div class="row d-flex justify-content-between">
+                <div class="col-6">
+                    <label>Mileage From:</label>
+                    <input type="number" name="MileageFrom" class="form-control input-custom-background" />
+                </div>
+
+                <div class="col-6">
+                    <label>Mileage To:</label>
+                    <input type="number" name="MileageTo" class="form-control input-custom-background" />
+                </div>
+            </div>
+
+            <div class="col-12">
+                <label>Fuel:</label>
+                <select name="Fuel" asp-items="@(new SelectList(Model.Fuels))" class="form-control input-custom-background">
+                    <option value="">Select Fuel</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <label>Transmission:</label>
+                <select name="Transmission" asp-items="@(new SelectList(Model.Transmissions))" class="form-control input-custom-background">
+                    <option value="">Select Transmission</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <label>Drivetrain:</label>
+                <select name="Drivetrain" asp-items="@(new SelectList(Model.Drivetrains))" class="form-control input-custom-background">
+                    <option value="">Select Drivetrain</option>
+                </select>
+            </div>
+
+            <button type="submit">Search</button>
+        </div>
+    </form>
+
 </div>
+
+<script>
+    document.getElementById('Make').addEventListener('change', function () {
+        var make = this.value;
+        fetch(`/Home/GetModels?make=${make}`)
+            .then(response => response.json())
+            .then(models => {
+                var modelSelect = document.getElementById('Model');
+                modelSelect.innerHTML = '<option value="">Select Model</option>';
+                models.forEach(model => {
+                    modelSelect.innerHTML += `<option value="${model}">${model}</option>`;
+                });
+            });
+    });
+</script>
