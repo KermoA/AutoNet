@@ -49,6 +49,7 @@ namespace AutoNet.Core.Domain
 		public int? DiscountPrice { get; set; }
 
         public ICollection<FileToDatabase> Files { get; set; }
+        public FileToDatabase FirstImage => Files?.FirstOrDefault();
 
         public string UserId { get; set; }
         [ForeignKey("UserId")]
@@ -60,5 +61,5 @@ namespace AutoNet.Core.Domain
 
 	public enum FuelType { Gasoline, Diesel, Electric, Hybrid, LPG, CNG }
 	public enum TransmissionType { Manual, Automatic, SemiAutomatic }
-	public enum DrivetrainType { FWD, RWD, AWD, FourWD }
+	public enum DrivetrainType { FWD, RWD, AWD }
 }

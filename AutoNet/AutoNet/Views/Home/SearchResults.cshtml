@@ -9,18 +9,10 @@
                 <div class="car-card">
                     <div class="row">
                         <div class="col-12 col-sm-4">
-@*                             @if (car.FirstCarImage != null)
+                            @if (car.FirstImage != null)
                             {
-                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(car.FirstCarImage)" alt="Car Image" />
-                            } *@
-@*                             @if (car.Image.Any())
-                            {
-                                <img src="data:image/jpeg;base64,@car.Image.First().Image" alt="Car Image" class="img-fluid rounded" />
+                                <img src="@Url.Action("GetImage", "Home", new { id = car.FirstImage.Id })" class="card-img-top" alt="Car Image" />
                             }
-                            else
-                            {
-                                <img src="path/to/default/image.jpg" alt="No Image Available" class="img-fluid rounded" />
-                            } *@
                         </div>
                         <div class="col-12 col-sm-8">
                             <div class="row">

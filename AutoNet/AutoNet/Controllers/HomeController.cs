@@ -1,8 +1,10 @@
 using AutoNet.Core.Domain;
 using AutoNet.Core.ServiceInterface;
 using AutoNet.Core.ViewModels;
+using AutoNet.Data;
 using AutoNet.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Diagnostics;
 
@@ -12,11 +14,13 @@ namespace AutoNet.Controllers
 	{
 		private readonly ILogger<HomeController> _logger;
         private readonly ICarsServices _carsServices;
+        private readonly AutoNetContext _context;
 
-		public HomeController(ILogger<HomeController> logger, ICarsServices carsServices)
+		public HomeController(ILogger<HomeController> logger, ICarsServices carsServices, AutoNetContext context)
 		{
 			_logger = logger;
             _carsServices = carsServices;
+            _context = context;
 		}
 
         public async Task<IActionResult> Index()
@@ -33,19 +37,33 @@ namespace AutoNet.Controllers
         {
             var results = await _carsServices.SearchCarsAsync(searchModel);
 
-            // Store the results in the session (instead of TempData)
             HttpContext.Session.SetString("SearchResults", JsonConvert.SerializeObject(results));
 
             return RedirectToAction("SearchResults");
         }
 
-        public IActionResult SearchResults()
+        public async Task<IActionResult> SearchResults()
         {
-            // Retrieve the results from the session
             var resultsJson = HttpContext.Session.GetString("SearchResults");
             var results = string.IsNullOrEmpty(resultsJson) ? new List<Car>() : JsonConvert.DeserializeObject<List<Car>>(resultsJson);
 
+            foreach (var car in results)
+            {
+                car.Files = await _context.FileToDatabases
+                    .Where(f => f.CarId == car.Id)
+                    .ToListAsync();
+            }
+
             return View(results);
+        }
+        public IActionResult GetImage(Guid id)
+        {
+            var image = _context.FileToDatabases.FirstOrDefault(f => f.Id == id);
+            if (image != null)
+            {
+                return File(image.ImageData, "image/jpeg");
+            }
+            return NotFound();
         }
 
         public async Task<JsonResult> GetModels(string make)
