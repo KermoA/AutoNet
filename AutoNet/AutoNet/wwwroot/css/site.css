@@ -24,7 +24,7 @@ body {
 }
 
 .navbar {
-    background-color: #333;
+    background-color: #2a2a2a;
 }
 
 .navbar .nav-link {
@@ -65,6 +65,10 @@ body {
 
 .navbar-nav .dropdown-toggle::after {
     display: none;
+}
+
+.footer {
+    background-color: #2a2a2a;
 }
 
 input.input-validation-error {
@@ -407,5 +411,70 @@ color: #888;
         margin: auto;
         margin-top: 60px;
     }
+}
+
+.input-custom-background {
+    color: white;
+    background-color: #444;
+    border: 1px solid black;
+}
+    .input-custom-background:focus {
+        color: white;
+        background-color: #4a4a4a;
+    }
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border: 1px solid black;
+}
+
+input.form-control:focus, textarea.form-control:focus, select.form-control:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border: 1px solid black !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+input[data-autocompleted] {
+    background-color: transparent !important;
+}
+
+input[type="checkbox"].custom-checkbox-input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: absolute;
+    opacity: 0;
+}
+
+.checkbox-container {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+}
+
+.custom-checkbox-box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f0f8ff;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    margin-right: 8px;
+}
+
+input[type="checkbox"].custom-checkbox-input:checked + .custom-checkbox-box {
+    background-color: #66bb6a;
+    border-color: #66bb6a;
+}
+
+.checkbox-container:hover .custom-checkbox-box {
+    background-color: #e0f7fa;
+    border-color: #80deea;
 }
 

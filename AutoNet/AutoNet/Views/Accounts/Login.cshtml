@@ -12,20 +12,21 @@
 			<form method="post">
 				<div asp-validation-summary="All" class="text-danger"></div>
 				<div class="form-group mb-2">
-					<input asp-for="Email" class="form-control" placeholder="Email" />
+					<input asp-for="Email" class="form-control input-custom-background" placeholder="Email" />
 					<span asp-validation-for="Email" class="text-danger"></span>
 				</div>
 
 				<div class="form-group mb-2">
-					<input asp-for="Password" class="form-control" placeholder="Password" />
+					<input asp-for="Password" class="form-control input-custom-background" placeholder="Password" />
 					<span asp-validation-for="Password" class="text-danger"></span>
 				</div>
 
 				<div class="form-group mb-2">
 					<div class="d-flex justify-content-between align-items-center">
 						<div class="custom-checkbox">
-							<label asp-for="RememberMe">
-								<input asp-for="RememberMe" />
+							<label asp-for="RememberMe" class="checkbox-container">
+								<input asp-for="RememberMe" type="checkbox" class="custom-checkbox-input" />
+								<span class="custom-checkbox-box"></span>
 								@Html.DisplayNameFor(m => m.RememberMe)
 							</label>
 						</div>
@@ -34,6 +35,7 @@
 						</div>
 					</div>
 				</div>
+
 
 				<button type="submit" class="btn btn-create w-100">
 					Sign In
