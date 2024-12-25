@@ -495,3 +495,7 @@ input[type="checkbox"].custom-checkbox-input:checked + .custom-checkbox-box {
         box-shadow: none !important;
         cursor: pointer;
     }
+
+.fs-14 {
+    font-size: 14px;
+}

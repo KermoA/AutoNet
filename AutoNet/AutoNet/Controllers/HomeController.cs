@@ -1,7 +1,9 @@
+using AutoNet.Core.Domain;
 using AutoNet.Core.ServiceInterface;
 using AutoNet.Core.ViewModels;
 using AutoNet.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace AutoNet.Controllers
@@ -30,7 +32,20 @@ namespace AutoNet.Controllers
         public async Task<IActionResult> Search(CarSearchViewModel searchModel)
         {
             var results = await _carsServices.SearchCarsAsync(searchModel);
-            return View("SearchResults", results);
+
+            // Store the results in the session (instead of TempData)
+            HttpContext.Session.SetString("SearchResults", JsonConvert.SerializeObject(results));
+
+            return RedirectToAction("SearchResults");
+        }
+
+        public IActionResult SearchResults()
+        {
+            // Retrieve the results from the session
+            var resultsJson = HttpContext.Session.GetString("SearchResults");
+            var results = string.IsNullOrEmpty(resultsJson) ? new List<Car>() : JsonConvert.DeserializeObject<List<Car>>(resultsJson);
+
+            return View(results);
         }
 
         public async Task<JsonResult> GetModels(string make)

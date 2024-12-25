@@ -17,6 +17,7 @@ namespace AutoNet
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // Configure Identity with custom settings
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
@@ -31,41 +32,52 @@ namespace AutoNet
                 .AddTokenProvider<DataProtectorTokenProvider<ApplicationUser>>("CustomEmailConfirmation")
                 .AddDefaultUI();
 
-			builder.Services.AddAuthentication()
-				.AddGoogle(googleOptions =>
-				{
-					googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-					googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-				})
-				.AddFacebook(facebookOptions =>
-				{
-					facebookOptions.ClientId = builder.Configuration["Authentication:Facebook:AppId"];
-					facebookOptions.ClientSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
-				})
-				.AddGitHub(githubOptions =>
-				{
-					githubOptions.ClientId = builder.Configuration["Authentication:GitHub:ClientId"];
-					githubOptions.ClientSecret = builder.Configuration["Authentication:GitHub:ClientSecret"];
-					githubOptions.Scope.Add("read:user");
-					githubOptions.Scope.Add("user:email");
-				});
+            // Configure External Authentication providers
+            builder.Services.AddAuthentication()
+                .AddGoogle(googleOptions =>
+                {
+                    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+                    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+                })
+                .AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.ClientId = builder.Configuration["Authentication:Facebook:AppId"];
+                    facebookOptions.ClientSecret = builder.Configuration["Authentication:Facebook:AppSecret"];
+                })
+                .AddGitHub(githubOptions =>
+                {
+                    githubOptions.ClientId = builder.Configuration["Authentication:GitHub:ClientId"];
+                    githubOptions.ClientSecret = builder.Configuration["Authentication:GitHub:ClientSecret"];
+                    githubOptions.Scope.Add("read:user");
+                    githubOptions.Scope.Add("user:email");
+                });
 
-			builder.Services.AddScoped<ICarsServices, CarsServices>();
+            // Register application services
+            builder.Services.AddScoped<ICarsServices, CarsServices>();
             builder.Services.AddScoped<IEmailServices, EmailServices>();
 
+            // Add DbContext for SQL Server
             builder.Services.AddDbContext<AutoNetContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Add transient services
             builder.Services.AddTransient<ConfirmationEmail>();
             builder.Services.AddScoped<IFileServices, FileServices>();
 
+            // Add session services for storing complex objects (e.g., car search results)
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);  // Set session timeout
+                options.Cookie.HttpOnly = true;  // For security, ensure the cookie is only accessible by the server
+                options.Cookie.IsEssential = true;  // Make session cookie essential for the application to work
+            });
+
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // Configure the HTTP request pipeline
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -74,8 +86,12 @@ namespace AutoNet
 
             app.UseRouting();
 
+            // Enable session middleware
+            app.UseSession();  // Make sure this is added to the pipeline
+
             app.UseAuthorization();
 
+            // Define routing rules
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
