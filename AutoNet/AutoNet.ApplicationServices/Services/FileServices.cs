@@ -4,7 +4,10 @@ using AutoNet.Core.ServiceInterface;
 using AutoNet.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using System.Xml;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutoNet.ApplicationServices.Services
 {
@@ -13,11 +16,7 @@ namespace AutoNet.ApplicationServices.Services
         private readonly IHostEnvironment _webHost;
         private readonly AutoNetContext _context;
 
-        public FileServices
-            (
-                IHostEnvironment webHost,
-                AutoNetContext context
-            )
+        public FileServices(IHostEnvironment webHost, AutoNetContext context)
         {
             _webHost = webHost;
             _context = context;
@@ -25,58 +24,85 @@ namespace AutoNet.ApplicationServices.Services
 
         public void UploadFilesToDatabase(CarDto dto, Car domain)
         {
-            if (dto.Files != null && dto.Files.Count > 0)
+            if (dto?.Files != null && dto.Files.Count > 0)
             {
                 foreach (var image in dto.Files)
                 {
-                    using (var target = new MemoryStream())
+                    if (image != null)
                     {
-                        FileToDatabase files = new FileToDatabase()
+                        using (var target = new MemoryStream())
                         {
-                            Id = Guid.NewGuid(),
-                            ImageTitle = image.FileName,
-                            CarId = domain.Id
-                        };
+                            var files = new FileToDatabase()
+                            {
+                                Id = Guid.NewGuid(),
+                                ImageTitle = image.FileName ?? "Untitled",
+                                CarId = domain.Id
+                            };
 
-                        image.CopyTo(target);
-                        files.ImageData = target.ToArray();
+                            image.CopyTo(target);
+                            files.ImageData = target.ToArray();
 
-                        _context.FileToDatabases.Add(files);
+                            _context.FileToDatabases.Add(files);
+                        }
                     }
                 }
+                _context.SaveChanges();
             }
         }
 
         public async Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto dto)
-		{
-			var image = await _context.FileToDatabases
-				.Where(x => x.Id == dto.Id)
-				.FirstOrDefaultAsync();
+        {
+            if (dto == null || dto.Id == Guid.Empty)
+            {
+                return null;
+            }
 
-			_context.FileToDatabases.Remove(image);
-			await _context.SaveChangesAsync();
+            var image = await _context.FileToDatabases
+                .Where(x => x.Id == dto.Id)
+                .FirstOrDefaultAsync();
 
-			return image;
-		}
+            if (image != null)
+            {
+                _context.FileToDatabases.Remove(image);
+                await _context.SaveChangesAsync();
+            }
 
-		public async Task<FileToDatabase> RemoveImagesFromDatabase(FileToDatabaseDto[] dtos)
-		{
-			foreach (var dto in dtos)
-			{
-				var image = await _context.FileToDatabases
-					.Where(x => x.Id == dto.Id)
-					.FirstOrDefaultAsync();
+            return image;
+        }
 
-				_context.FileToDatabases.Remove(image);
-				await _context.SaveChangesAsync();
-			}
+        public async Task<List<FileToDatabase>> RemoveImagesFromDatabase(FileToDatabaseDto[] dtos)
+        {
+            if (dtos == null || dtos.Length == 0)
+            {
+                return new List<FileToDatabase>();
+            }
 
-			return null;
-		}
+            var imagesToRemove = new List<FileToDatabase>();
 
-		public List<FileToDatabase> GetCarFiles()
-		{
-			return _context.FileToDatabases.ToList();
-		}
-	}
+            foreach (var dto in dtos)
+            {
+                var image = await _context.FileToDatabases
+                    .Where(x => x.Id == dto.Id)
+                    .FirstOrDefaultAsync();
+
+                if (image != null)
+                {
+                    imagesToRemove.Add(image);
+                }
+            }
+
+            if (imagesToRemove.Any())
+            {
+                _context.FileToDatabases.RemoveRange(imagesToRemove);
+                await _context.SaveChangesAsync();
+            }
+
+            return imagesToRemove;
+        }
+
+        public List<FileToDatabase> GetCarFiles()
+        {
+            return _context.FileToDatabases.ToList() ?? new List<FileToDatabase>();
+        }
+    }
 }

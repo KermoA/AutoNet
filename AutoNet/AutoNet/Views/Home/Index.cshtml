@@ -11,14 +11,14 @@
 
                 <h2>Search</h2>
                 <div class="col-12 col-sm-12 mb-1">
-                    <select id="Make" name="SelectedMake" asp-items="@(new SelectList(Model.Makes))" 
-                    class="form-control input-custom-background text-center">
+                    <select id="Make" name="SelectedMake" asp-items="@(new SelectList(Model.Makes))"
+                            class="form-control input-custom-background text-center">
                         <option value="">-- Make --</option>
                     </select>
                 </div>
 
                 <div class="col-12 col-sm-12 mb-1">
-                    <select id="Model" name="SelectedModel" class="form-control input-custom-background 
+                    <select id="Model" name="SelectedModel" class="form-control input-custom-background
                         text-center">
                         <option value="">-- Model --</option>
                     </select>
@@ -26,56 +26,56 @@
 
                 <div class="row d-flex justify-content-between mb-1">
                     <div class="col-3 d-flex align-items-center">
-					    <p class="mb-0"><strong>Year</strong></p>
+                        <p class="mb-0"><strong>Year</strong></p>
                     </div>
                     <div class="col-4">
-                        <input type="number" name="YearFrom" class="form-control input-custom-background 
+                        <input type="number" name="YearFrom" class="form-control input-custom-background
                             text-center fs-14" placeholder="from" />
                     </div>
                     <div class="col-4">
-                        <input type="number" name="YearTo" class="form-control input-custom-background 
+                        <input type="number" name="YearTo" class="form-control input-custom-background
                             text-center fs-14" placeholder="to" />
                     </div>
                 </div>
 
                 <div class="row d-flex justify-content-between mb-1">
                     <div class="col-3 d-flex align-items-center">
-					    <p class="mb-0"><strong>Power</strong></p>
+                        <p class="mb-0"><strong>Power</strong></p>
                     </div>
                     <div class="col-4">
-                        <input type="number" name="PowerFrom" class="form-control input-custom-background 
+                        <input type="number" name="PowerFrom" class="form-control input-custom-background
                             text-center fs-14" placeholder="from" />
                     </div>
                     <div class="col-4">
-                        <input type="number" name="PowerTo" class="form-control input-custom-background 
+                        <input type="number" name="PowerTo" class="form-control input-custom-background
                             text-center fs-14" placeholder="to" />
                     </div>
                 </div>
 
                 <div class="row d-flex justify-content-between mb-1">
                     <div class="col-3 d-flex align-items-center">
-					    <p class="mb-0"><strong>Price</strong></p>
+                        <p class="mb-0"><strong>Price</strong></p>
                     </div>
                     <div class="col-4">
-                        <input type="number" name="PriceFrom" class="form-control input-custom-background 
+                        <input type="number" name="PriceFrom" class="form-control input-custom-background
                         text-center fs-14" placeholder="from" />
                     </div>
                     <div class="col-4">
-                        <input type="number" name="PriceTo" class="form-control input-custom-background 
+                        <input type="number" name="PriceTo" class="form-control input-custom-background
                             text-center fs-14" placeholder="to" />
                     </div>
                 </div>
 
                 <div class="row d-flex justify-content-between mb-1">
                     <div class="col-3 d-flex align-items-center">
-					    <p class="mb-0"><strong>Mileage</strong></p>
+                        <p class="mb-0"><strong>Mileage</strong></p>
                     </div>
                     <div class="col-4">
-                        <input type="number" name="MileageFrom" class="form-control input-custom-background 
-                            text-center fs-14" placeholder="from"/>
+                        <input type="number" name="MileageFrom" class="form-control input-custom-background
+                            text-center fs-14" placeholder="from" />
                     </div>
                     <div class="col-4">
-                        <input type="number" name="MileageTo" class="form-control input-custom-background 
+                        <input type="number" name="MileageTo" class="form-control input-custom-background
                             text-center fs-14" placeholder="to" />
                     </div>
                 </div>
@@ -104,12 +104,47 @@
                 <button type="submit" class="btn btn-create w-100">Search</button>
             </form>
         </div>
+
         <div class="col-12 col-sm-9">
             <div>
-                <h1 class="text-center">Latest ads</h1>
+                <h1 class="text-center">Latest Ads</h1>
+                <div class="row d-flex g-0">
+                    @foreach (var car in Model.LatestCars)
+                    {
+                        <div class="col-6 col-sm-6 col-md-3 mb-4">
+                            <a asp-action="Details" asp-controller="Cars" asp-route-id="@car.Id" class="car-card-link">
+                                <div class="car-card d-flex flex-column h-100">
+                                    @if (car.ImageData != null && car.ImageData.Length > 0)
+                                    {
+                                        <img src="@Url.Action("GetImage", "Home", new { id = car.Id })" alt="Car Image" class="img-fluid mb-3" style="height:120px;" />
+                                    }
+                                    else
+                                    {
+                                        <p>No image available</p>
+                                    }
+                                    <h5>@car.Make @car.Model</h5>
+                                    <div class="row g-0">
+                                        <div class="col-6">
+                                            <p>@car.Year</p>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            @if (car.DiscountPrice.HasValue)
+                                            {
+                                                <p style="color: red;">@car.DiscountPrice.Value €</p>
+                                            }
+                                            else
+                                            {
+                                                <p>@car.Price €</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -117,13 +152,21 @@
     document.getElementById('Make').addEventListener('change', function () {
         var make = this.value;
         fetch(`/Home/GetModels?make=${make}`)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to fetch models");
+                }
+                return response.json();
+            })
             .then(models => {
                 var modelSelect = document.getElementById('Model');
-                modelSelect.innerHTML = '<option value="">Select Model</option>';
+                modelSelect.innerHTML = '<option value="">-- Model --</option>';
                 models.forEach(model => {
                     modelSelect.innerHTML += `<option value="${model}">${model}</option>`;
                 });
+            })
+            .catch(error => {
+                console.error("Error fetching models:", error);
             });
     });
 </script>

@@ -11,7 +11,7 @@
                         <div class="col-12 col-sm-4">
                             @if (car.FirstImage != null)
                             {
-                                <img src="@Url.Action("GetImage", "Home", new { id = car.FirstImage.Id })" class="card-img-top" alt="Car Image" />
+                                <img src="@Url.Action("GetImage", "Home", new { id = car.Id })" alt="Car Image" />
                             }
                         </div>
                         <div class="col-12 col-sm-8">
