@@ -9,7 +9,7 @@
         <div class="col-12 col-sm-3">
             <form asp-action="Search" method="post">
 
-                <h2>Search</h2>
+                <h2 class="mb-4">Search</h2>
                 <div class="col-12 col-sm-12 mb-1">
                     <select id="Make" name="SelectedMake" asp-items="@(new SelectList(Model.Makes))"
                             class="form-control input-custom-background text-center">
@@ -111,19 +111,20 @@
                 <div class="row d-flex g-0">
                     @foreach (var car in Model.LatestCars)
                     {
-                        <div class="col-6 col-sm-6 col-md-3 mb-4">
+                        <div class="col-6 col-sm-6 col-md-4 mb-0">
                             <a asp-action="Details" asp-controller="Cars" asp-route-id="@car.Id" class="car-card-link">
-                                <div class="car-card d-flex flex-column h-100">
+                                <div class="car-card latest-cars-card">
                                     @if (car.ImageData != null && car.ImageData.Length > 0)
                                     {
                                         <img src="@Url.Action("GetImage", "Home", new { id = car.Id })" alt="Car Image" class="img-fluid mb-3" style="height:120px;" />
                                     }
                                     else
                                     {
-                                        <p>No image available</p>
+                                        <img src="/images/noImagePlaceholder.png" alt="Default Car Image" class="img-fluid mb-3" style="height:120px;" />
+
                                     }
-                                    <h5>@car.Make @car.Model</h5>
-                                    <div class="row g-0">
+                                    <h6>@car.Make @car.Model</h6>
+                                    <div class="row">
                                         <div class="col-6">
                                             <p>@car.Year</p>
                                         </div>

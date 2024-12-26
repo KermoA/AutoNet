@@ -40,7 +40,7 @@
                     <p>
                         @(Model.DiscountPrice.HasValue
                             ? Model.DiscountPrice.Value.ToString() + " €"
-                            : "N/A")
+                            : "")
                     </p>
                 </div>
                 <div class="col-12 col-sm-6">
@@ -60,7 +60,7 @@
                     }
                     else
                     {
-                        <p>No images available.</p>
+                        <img src="/images/noImagePlaceholder.png" alt="Default Car Image" class="img-fluid large-car-image" />
                     }
                 </div>
             </div>

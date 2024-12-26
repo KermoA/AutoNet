@@ -33,11 +33,9 @@ namespace AutoNet.Core.ViewModels
         public List<TransmissionType> Transmissions => Enum.GetValues(typeof(TransmissionType)).Cast<TransmissionType>().ToList();
         public List<DrivetrainType> Drivetrains => Enum.GetValues(typeof(DrivetrainType)).Cast<DrivetrainType>().ToList();
 
-        // Property for storing the latest cars to display in the Index view
         public List<LatestCarViewModel> LatestCars { get; set; } = new List<LatestCarViewModel>();
     }
 
-    // View model to represent a single car in the latest cars section
     public class LatestCarViewModel
     {
         public Guid Id { get; set; }
