@@ -566,3 +566,13 @@ input[type="checkbox"].custom-checkbox-input:checked + .custom-checkbox-box {
     font-weight: bold;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+

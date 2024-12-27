@@ -10,7 +10,7 @@
                 <label for="pageSize" class="me-2 mb-0">Cars per page:</label>
                 <select id="pageSize" name="pageSize" class="form-control input-custom-background text-center" style="width: 50px;" onchange="this.form.submit()">
                     @{
-                        var pageSizes = new[] { 5, 10, 20 };
+                        var pageSizes = new[] { 10, 25, 50 };
                     }
                     @foreach (var size in pageSizes)
                     {

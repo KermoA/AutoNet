@@ -1,7 +1,7 @@
 ﻿@model AutoNet.Models.Cars.CarCreateUpdateViewModel
 
 @{
-    ViewData["Title"] = Model.Id == null ? "Create Car" : "Update Car";
+    ViewData["Title"] = Model.Id == null ? "Insert sale ad" : "Update sale ad";
 }
 
 <h1 class="text-center">@ViewData["Title"]</h1>
@@ -32,38 +32,38 @@
             </div>
             <div class="col-6 col-sm-6">
                 <label asp-for="Year" class="control-label">Initial Registration</label>
-                <input asp-for="Year" class="form-control input-custom-background" placeholder="Year" value="@(Model.Year > 0 ? Model.Year.ToString() : "")" />
+                <input asp-for="Year" class="form-control input-custom-background text-end" placeholder="Year" value="@(Model.Year > 0 ? Model.Year.ToString() : "")" />
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
         </div>
         <div class="row mt-2">
             <div class="col-6 col-sm-3">
                 <label asp-for="EngineDisplacement" class="control-label">Engine Displacement</label>
-                <input asp-for="EngineDisplacement" class="form-control input-custom-background" placeholder="cc"
+                <input asp-for="EngineDisplacement" class="form-control input-custom-background text-end" placeholder="cc"
                        value="@(Model.EngineDisplacement > 0 ? Model.EngineDisplacement.ToString() : "")" />
                 <span asp-validation-for="EngineDisplacement" class="text-danger"></span>
             </div>
             <div class="col-6 col-sm-3">
                 <label asp-for="Power" class="control-label">Power</label>
-                <input asp-for="Power" class="form-control input-custom-background" placeholder="kW"
+                <input asp-for="Power" class="form-control input-custom-background text-end" placeholder="kW"
                        value="@(Model.Power > 0 ? Model.Power.ToString() : "")" />
                 <span asp-validation-for="Power" class="text-danger"></span>
             </div>
             <div class="col-6 col-sm-2">
                 <label asp-for="Mileage" class="control-label">Mileage</label>
-                <input asp-for="Mileage" class="form-control input-custom-background" placeholder="km"
+                <input asp-for="Mileage" class="form-control input-custom-background text-end" placeholder="km"
                        value="@(Model.Mileage > 0 ? Model.Mileage.ToString() : "")" />
                 <span asp-validation-for="Mileage" class="text-danger"></span>
             </div>
             <div class="col-3  col-sm-2">
                 <label asp-for="InspectionMonth" class="control-label">Inspection</label>
-                <input asp-for="InspectionMonth" class="form-control input-custom-background" placeholder="Month"
+                <input asp-for="InspectionMonth" class="form-control input-custom-background text-end" placeholder="Month"
                        value="@(Model.InspectionMonth > 0 ? Model.InspectionMonth.ToString() : "")" />
                 <span asp-validation-for="InspectionMonth" class="text-danger"></span>
             </div>
             <div class="col-3 col-sm-2">
                 <label class="control-label"></label>
-                <input asp-for="InspectionYear" class="form-control input-custom-background" placeholder="Year"
+                <input asp-for="InspectionYear" class="form-control input-custom-background text-end" placeholder="Year"
                        value="@(Model.InspectionYear > 0 ? Model.InspectionYear.ToString() : "")" />
                 <span asp-validation-for="InspectionYear" class="text-danger"></span>
             </div>
@@ -71,7 +71,8 @@
         <div class="row mt-2">
             <div class="col-4 col-sm-4">
                 <label asp-for="Fuel" class="control-label"></label>
-                <select asp-for="Fuel" class="form-control input-custom-background">
+                <select asp-for="Fuel" class="form-control input-custom-background text-center">
+                    <option>-- Fuel --</option>
                     <option value="Gasoline">Gasoline</option>
                     <option value="Diesel">Diesel</option>
                     <option value="Electric">Electric</option>
@@ -84,7 +85,8 @@
             </div>
             <div class="col-4 col-sm-4">
                 <label asp-for="Transmission" class="control-label"></label>
-                <select asp-for="Transmission" class="form-control input-custom-background">
+                <select asp-for="Transmission" class="form-control input-custom-background text-center">
+                    <option>-- Transmission --</option>
                     <option value="Manual">Manual</option>
                     <option value="Automatic">Automatic</option>
                     <option value="SemiAutomatic">Semi-Automatic</option>
@@ -93,7 +95,8 @@
             </div>
             <div class="col-4 col-sm-4">
                 <label asp-for="Drivetrain" class="control-label"></label>
-                <select asp-for="Drivetrain" class="form-control input-custom-background">
+                <select asp-for="Drivetrain" class="form-control input-custom-background text-center">
+                    <option>-- Drivetrain --</option>
                     <option value="FWD">Front-Wheel Drive</option>
                     <option value="RWD">Rear-Wheel Drive</option>
                     <option value="AWD">All-Wheel Drive</option>
@@ -104,13 +107,13 @@
         <div class="row mt-2">
             <div class="col-6 col-sm-6">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control input-custom-background" placeholder="€"
+                <input asp-for="Price" class="form-control input-custom-background text-end" placeholder="€"
                        value="@(Model.Price > 0 ? Model.Price.ToString() : "")" />
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="col-6 col-sm-6">
                 <label asp-for="DiscountPrice" class="control-label">Discount Price</label>
-                <input asp-for="DiscountPrice" class="form-control input-custom-background" placeholder="€"
+                <input asp-for="DiscountPrice" class="form-control input-custom-background text-end" placeholder="€"
                        value="@(Model.DiscountPrice > 0 ? Model.DiscountPrice.ToString() : "")" />
                 <span asp-validation-for="DiscountPrice" class="text-danger"></span>
             </div>
