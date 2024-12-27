@@ -585,3 +585,8 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
+.btn:focus, .fas:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
