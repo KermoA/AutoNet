@@ -8,7 +8,7 @@
         <div class="row col-5 col-sm-3">
             <form method="get" asp-action="SearchResults" class="d-flex align-items-center justify-content-end">
                 <label for="pageSize" class="me-2 mb-0">Cars per page:</label>
-                <select id="pageSize" name="pageSize" class="form-control input-custom-background" style="width: 50px;" onchange="this.form.submit()">
+                <select id="pageSize" name="pageSize" class="form-control input-custom-background text-center" style="width: 50px;" onchange="this.form.submit()">
                     @{
                         var pageSizes = new[] { 5, 10, 20 };
                     }

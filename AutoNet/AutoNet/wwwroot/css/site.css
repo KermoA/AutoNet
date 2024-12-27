@@ -523,3 +523,46 @@ input[type="checkbox"].custom-checkbox-input:checked + .custom-checkbox-box {
 .fs-14 {
     font-size: 14px;
 }
+
+.pagination {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+.page-link {
+    background-color: #333;
+    color: #ddd;
+    border: 1px solid #444;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+}
+    .page-link:hover {
+        background-color: #555;
+        color: #ddd;
+        border-color: #666;
+    }
+
+.page-item.active .page-link {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.page-item.disabled .page-link {
+    background-color: #666;
+    color: #999;
+    border-color: #777;
+    pointer-events: none;
+}
+
+.page-item a.page-link {
+    font-weight: bold;
+}
+
