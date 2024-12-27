@@ -13,19 +13,19 @@
         <div class="card-body">
             <div class="row mb-3">
                 <h4 class="card-header mb-3">General Information</h4>
-                    <div class="col-6 col-sm-3">
-                        <p><strong>Initial Registration Year</strong></p>
-                        <p><strong>VIN</strong></p>
-                        <p><strong>Mileage</strong></p>
-                        <p><strong>Power</strong></p>
-                        <p><strong>Engine Displacement</strong></p>
-                        <p><strong>Fuel</strong></p>
-                        <p><strong>Transmission</strong></p>
-                        <p><strong>Drivetrain</strong></p>
-                        <p><strong>Inspection Valid</strong></p>
-                        <p><strong>Price</strong></p>
-                        <p><strong>Discounted Price</strong></p>
-                    </div>
+                <div class="col-6 col-sm-3">
+                    <p><strong>Initial Registration Year</strong></p>
+                    <p><strong>VIN</strong></p>
+                    <p><strong>Mileage</strong></p>
+                    <p><strong>Power</strong></p>
+                    <p><strong>Engine Displacement</strong></p>
+                    <p><strong>Fuel</strong></p>
+                    <p><strong>Transmission</strong></p>
+                    <p><strong>Drivetrain</strong></p>
+                    <p><strong>Inspection Valid</strong></p>
+                    <p><strong>Price</strong></p>
+                    <p><strong>Discounted Price</strong></p>
+                </div>
                 <div class="col-6 col-sm-3 text-end">
                     <p>@Model.Year</p>
                     <p>@Model.VIN</p>
@@ -47,13 +47,13 @@
                     @if (Model.Images?.Any() == true)
                     {
                         <div>
-                            <img src="@Model.Images.First().Image" alt="@Model.Images.First().ImageTitle" class="large-car-image" />
+                            <img src="@Model.Images.First().Image" alt="@Model.Images.First().ImageTitle" class="large-car-image" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="openImageModal(0)" />
                         </div>
                         <div class="row smaller-car-images mt-1">
                             @foreach (var image in Model.Images.Skip(1))
                             {
                                 <div class="col-3">
-                                    <img src="@image.Image" alt="@image.ImageTitle" class="small-car-image" />
+                                    <img src="@image.Image" alt="@image.ImageTitle" class="small-car-image" data-bs-toggle="modal" data-bs-target="#imageModal" onclick="openImageModal(@Model.Images.IndexOf(image))" />
                                 </div>
                             }
                         </div>
@@ -83,3 +83,47 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg mt-2 mb-2">
+        <div class="modal-content car-img-modal" style="height: auto;">
+            <div class="modal-body p-1">
+                <div class="position-relative">
+                    <img id="modalImage" src="" alt="" class="img-fluid" />
+
+                    <!-- Prev and Next FontAwesome Arrows on top of the image -->
+                    <div class="position-absolute top-50 start-0 translate-middle-y">
+                        <i class="fas fa-arrow-left btn btn-arrow" id="prevImageBtn" onclick="changeImage('prev')"></i>
+                    </div>
+
+                    <div class="position-absolute top-50 end-0 translate-middle-y">
+                        <i class="fas fa-arrow-right btn btn-arrow" id="nextImageBtn" onclick="changeImage('next')"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var currentIndex = 0;
+    var images = @Html.Raw(Json.Serialize(Model.Images.Select(i => i.Image).ToList()));
+
+    function openImageModal(index) {
+        currentIndex = index;
+        var modalImage = document.getElementById("modalImage");
+        modalImage.src = images[currentIndex];
+        modalImage.alt = Model.Images[currentIndex].ImageTitle;
+    }
+
+    function changeImage(direction) {
+        if (direction === 'prev') {
+            currentIndex = (currentIndex === 0) ? images.length - 1 : currentIndex - 1;
+        } else if (direction === 'next') {
+            currentIndex = (currentIndex === images.length - 1) ? 0 : currentIndex + 1;
+        }
+        var modalImage = document.getElementById("modalImage");
+        modalImage.src = images[currentIndex];
+        modalImage.alt = Model.Images[currentIndex].ImageTitle;
+    }
+</script>
