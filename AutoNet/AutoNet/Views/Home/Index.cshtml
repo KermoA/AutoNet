@@ -107,7 +107,16 @@
 
         <div class="col-12 col-sm-9">
             <div>
-                <h1 class="text-center">Latest Ads</h1>
+                <div class="row align-items-center">
+                    <div class="col text-center">
+                        <h1>Latest Ads</h1>
+                    </div>
+                    <div class="col-auto">
+                        <a asp-action="Index" asp-controller="Cars" class="btn btn-outline-danger">
+                            See All
+                        </a>
+                    </div>
+                </div>
                 <div class="row d-flex g-0">
                     @foreach (var car in Model.LatestCars)
                     {

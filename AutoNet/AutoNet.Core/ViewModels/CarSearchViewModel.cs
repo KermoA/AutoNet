@@ -46,4 +46,12 @@ namespace AutoNet.Core.ViewModels
         public int? DiscountPrice { get; set; }
         public byte[] ImageData { get; set; }
     }
+
+    public class SearchResultsViewModel
+    {
+        public IEnumerable<Car> Cars { get; set; } = new List<Car>();
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+        public int PageSize { get; set; }
+    }
 }

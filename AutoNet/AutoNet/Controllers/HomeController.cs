@@ -60,19 +60,32 @@ namespace AutoNet.Controllers
             return RedirectToAction("SearchResults");
         }
 
-        public async Task<IActionResult> SearchResults()
+        public async Task<IActionResult> SearchResults(int page = 1, int pageSize = 10)
         {
             var resultsJson = HttpContext.Session.GetString("SearchResults");
             var results = string.IsNullOrEmpty(resultsJson) ? new List<Car>() : JsonConvert.DeserializeObject<List<Car>>(resultsJson);
 
-            foreach (var car in results)
+            var pagedResults = results
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            foreach (var car in pagedResults)
             {
                 car.Files = await _context.FileToDatabases
                     .Where(f => f.CarId == car.Id)
                     .ToListAsync();
             }
 
-            return View(results);
+            var viewModel = new SearchResultsViewModel
+            {
+                Cars = pagedResults,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling((double)results.Count / pageSize),
+                PageSize = pageSize
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult GetImage(Guid id)
