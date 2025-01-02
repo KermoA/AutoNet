@@ -64,7 +64,7 @@ namespace AutoNet
             builder.Services.AddTransient<ConfirmationEmail>();
             builder.Services.AddScoped<IFileServices, FileServices>();
 
-            // Add session services for storing complex objects (e.g., car search results)
+            // Add session services for storing complex objects
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);  // Set session timeout
@@ -87,7 +87,7 @@ namespace AutoNet
             app.UseRouting();
 
             // Enable session middleware
-            app.UseSession();  // Make sure this is added to the pipeline
+            app.UseSession();
 
             app.UseAuthorization();
 
