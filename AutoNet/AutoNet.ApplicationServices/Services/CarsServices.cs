@@ -37,6 +37,11 @@ namespace AutoNet.ApplicationServices.Services
 
         public async Task<Car> Create(CarDto dto, string userName)
         {
+            if (string.IsNullOrEmpty(userName))
+            {
+                return null;
+            }
+
             var currentUser = await _userManager.FindByNameAsync(userName);
             if (currentUser == null)
             {
