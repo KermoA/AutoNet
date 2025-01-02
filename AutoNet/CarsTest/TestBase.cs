@@ -41,9 +41,10 @@ namespace CarsTest
             services.AddScoped<IFileServices, FileServices>();
             services.AddScoped<IHostEnvironment, MockIHostEnvironment>();
 
-            // Mock and configure UserManager
             services.AddScoped(serviceProvider =>
             {
+                var context = serviceProvider.GetRequiredService<AutoNetContext>();
+
                 var userStoreMock = new Mock<IUserStore<ApplicationUser>>();
                 var userManagerMock = new Mock<UserManager<ApplicationUser>>(
                     userStoreMock.Object,
@@ -56,8 +57,14 @@ namespace CarsTest
                     null,
                     null
                 );
+
+                // Configure the mock to find a user by username
+                userManagerMock.Setup(um => um.FindByNameAsync(It.IsAny<string>()))
+                    .ReturnsAsync((string userName) => context.Users.SingleOrDefault(u => u.UserName == userName));
+
                 return userManagerMock.Object;
             });
+
 
             // Configure the in-memory database
             services.AddDbContext<AutoNetContext>(options =>
