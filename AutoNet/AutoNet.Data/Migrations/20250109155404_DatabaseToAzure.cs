@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AutoNet.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class DatabaseToAzure : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -176,6 +176,8 @@ namespace AutoNet.Data.Migrations
                     InspectionMonth = table.Column<int>(type: "int", nullable: false),
                     InspectionYear = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
+                    DiscountPrice = table.Column<int>(type: "int", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -189,6 +191,25 @@ namespace AutoNet.Data.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FileToDatabases",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ImageTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    CarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileToDatabases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FileToDatabases_Cars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "Cars",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -234,6 +255,11 @@ namespace AutoNet.Data.Migrations
                 name: "IX_Cars_UserId",
                 table: "Cars",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileToDatabases_CarId",
+                table: "FileToDatabases",
+                column: "CarId");
         }
 
         /// <inheritdoc />
@@ -255,10 +281,13 @@ namespace AutoNet.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Cars");
+                name: "FileToDatabases");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Cars");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutoNet.Data.Migrations
 {
     [DbContext(typeof(AutoNetContext))]
-    [Migration("20241219202906_PriceAddedToCars")]
-    partial class PriceAddedToCars
+    [Migration("20250109155404_DatabaseToAzure")]
+    partial class DatabaseToAzure
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -193,6 +193,8 @@ namespace AutoNet.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CarId");
+
                     b.ToTable("FileToDatabases");
                 });
 
@@ -340,6 +342,13 @@ namespace AutoNet.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AutoNet.Core.Domain.FileToDatabase", b =>
+                {
+                    b.HasOne("AutoNet.Core.Domain.Car", null)
+                        .WithMany("Files")
+                        .HasForeignKey("CarId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -389,6 +398,11 @@ namespace AutoNet.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AutoNet.Core.Domain.Car", b =>
+                {
+                    b.Navigation("Files");
                 });
 #pragma warning restore 612, 618
         }
