@@ -4,10 +4,6 @@ using AutoNet.Core.ServiceInterface;
 using AutoNet.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AutoNet.ApplicationServices.Services
 {
@@ -24,30 +20,33 @@ namespace AutoNet.ApplicationServices.Services
 
         public void UploadFilesToDatabase(CarDto dto, Car domain)
         {
-            if (dto?.Files != null && dto.Files.Count > 0)
+            if (dto?.Files == null || dto.Files.Count == 0)
             {
-                foreach (var image in dto.Files)
+                return;
+            }
+
+            foreach (var image in dto.Files)
+            {
+                if (image != null && image.Length > 0)
                 {
-                    if (image != null)
+                    using (var target = new MemoryStream())
                     {
-                        using (var target = new MemoryStream())
+                        image.CopyTo(target);
+
+                        var fileToDatabase = new FileToDatabase
                         {
-                            var files = new FileToDatabase()
-                            {
-                                Id = Guid.NewGuid(),
-                                ImageTitle = image.FileName ?? "Untitled",
-                                CarId = domain.Id
-                            };
+                            Id = Guid.NewGuid(),
+                            ImageTitle = !string.IsNullOrWhiteSpace(image.FileName) ? image.FileName : "Untitled",
+                            ImageData = target.ToArray(),
+                            CarId = domain.Id
+                        };
 
-                            image.CopyTo(target);
-                            files.ImageData = target.ToArray();
-
-                            _context.FileToDatabases.Add(files);
-                        }
+                        _context.FileToDatabases.Add(fileToDatabase);
                     }
                 }
-                _context.SaveChanges();
             }
+
+            _context.SaveChanges();
         }
 
         public async Task<FileToDatabase> RemoveImageFromDatabase(FileToDatabaseDto dto)

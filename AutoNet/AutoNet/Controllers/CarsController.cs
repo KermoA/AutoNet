@@ -93,7 +93,6 @@ namespace AutoNet.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            // Retrieve the car details including related user and files
             var car = await _context.Cars
                 .Include(c => c.User)
                 .Include(c => c.Files)
@@ -104,7 +103,6 @@ namespace AutoNet.Controllers
                 return View("Error");
             }
 
-            // Map car details to the view model
             var vm = new CarDetailsViewModel
             {
                 Id = car.Id,

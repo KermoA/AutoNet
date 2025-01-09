@@ -48,40 +48,41 @@ namespace AutoNet.ApplicationServices.Services
                 throw new Exception($"User with username {userName} not found.");
             }
 
-            Car car = new();
-
-            car.Id = Guid.NewGuid();
-            car.Make = dto.Make;
-            car.Model = dto.Model;
-            car.Year = dto.Year;
-            car.VIN = dto.VIN;
-            car.Mileage = dto.Mileage;
-            car.Power = dto.Power;
-            car.EngineDisplacement = dto.EngineDisplacement;
-            car.Fuel = Enum.TryParse(dto.Fuel, out FuelType fuelType) ? fuelType : FuelType.Gasoline;
-            car.Transmission = Enum.TryParse(dto.Transmission, out TransmissionType transmissionType) ? transmissionType : TransmissionType.Manual;
-            car.Drivetrain = Enum.TryParse(dto.Drivetrain, out DrivetrainType drivetrainType) ? drivetrainType : DrivetrainType.FWD;
-            car.InspectionMonth = dto.InspectionMonth;
-            car.InspectionYear = dto.InspectionYear;
-            car.Description = dto.Description;
-            car.CreatedAt = DateTime.UtcNow;
-            car.UpdatedAt = DateTime.UtcNow;
-            car.UserId = currentUser.Id;
-            car.Price = dto.Price;
-            car.DiscountPrice = dto.DiscountPrice;
-
-            if (dto.Files != null)
+            Car car = new()
             {
-                _fileServices.UploadFilesToDatabase(dto, car);
-            }
+                Id = Guid.NewGuid(),
+                Make = dto.Make,
+                Model = dto.Model,
+                Year = dto.Year,
+                VIN = dto.VIN,
+                Mileage = dto.Mileage,
+                Power = dto.Power,
+                EngineDisplacement = dto.EngineDisplacement,
+                Fuel = Enum.TryParse(dto.Fuel, out FuelType fuelType) ? fuelType : FuelType.Gasoline,
+                Transmission = Enum.TryParse(dto.Transmission, out TransmissionType transmissionType) ? transmissionType : TransmissionType.Manual,
+                Drivetrain = Enum.TryParse(dto.Drivetrain, out DrivetrainType drivetrainType) ? drivetrainType : DrivetrainType.FWD,
+                InspectionMonth = dto.InspectionMonth,
+                InspectionYear = dto.InspectionYear,
+                Description = dto.Description,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                UserId = currentUser.Id,
+                Price = dto.Price,
+                DiscountPrice = dto.DiscountPrice
+            };
 
             await _context.Cars.AddAsync(car);
             await _context.SaveChangesAsync();
 
-            return car;
-		}
+            if (dto.Files != null && dto.Files.Any())
+            {
+                _fileServices.UploadFilesToDatabase(dto, car);
+            }
 
-		public async Task<Car> Update(CarDto dto)
+            return car;
+        }
+
+        public async Task<Car> Update(CarDto dto)
         {
             var car = await _context.Cars.FirstOrDefaultAsync(x => x.Id == dto.Id);
 
