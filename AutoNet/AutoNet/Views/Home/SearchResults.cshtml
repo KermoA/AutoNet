@@ -27,7 +27,7 @@
             <a asp-action="Details" asp-controller="Cars" asp-route-id="@car.Id" class="car-card-link">
                 <div class="car-card">
                     <div class="row">
-                        <div class="col-12 col-sm-4">
+                        <div class="col-12 col-sm-4 mb-3 mb-sm-0">
                             @if (car.FirstImage != null)
                             {
                                 <img src="@Url.Action("GetImage", "Home", new { id = car.Id })" alt="Car Image" />
