@@ -190,8 +190,8 @@ namespace AutoNet.Controllers
 							UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
 							Email = info.Principal.FindFirstValue(ClaimTypes.Email),
 							FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName),
-							LastName = info.Principal.FindFirstValue(ClaimTypes.GivenName)
-						};
+                            LastName = info.Principal.FindFirstValue(ClaimTypes.Surname)
+                        };
 						await _userManager.CreateAsync(user);
 					}
 					await _userManager.AddLoginAsync(user, info);
