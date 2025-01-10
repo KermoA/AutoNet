@@ -120,9 +120,9 @@
                 <div class="row d-flex g-0">
                     @foreach (var car in Model.LatestCars)
                     {
-                        <div class="col-6 col-sm-6 col-md-4 mb-0">
+                        <div class="col-6 col-sm-6 col-md-4 mb-4">
                             <a asp-action="Details" asp-controller="Cars" asp-route-id="@car.Id" class="car-card-link">
-                                <div class="car-card latest-cars-card">
+                                <div class="latest-cars-card">
                                     @if (car.ImageData != null && car.ImageData.Length > 0)
                                     {
                                         <img src="@Url.Action("GetImage", "Home", new { id = car.Id })" alt="Car Image" class="img-fluid mb-3" style="height:120px;" />
@@ -132,8 +132,8 @@
                                         <img src="/images/noImagePlaceholder.png" alt="Default Car Image" class="img-fluid mb-3" style="height:120px;" />
 
                                     }
-                                    <h6>@car.Make @car.Model</h6>
-                                    <div class="row">
+                                    <h6 class="mb-1">@car.Make @car.Model</h6>
+                                    <div class="row mt-auto mb-2">
                                         <div class="col-6">
                                             <p>@car.Year</p>
                                         </div>

@@ -223,26 +223,50 @@ button, .btn {
 .latest-cars-card {
     display: flex;
     flex-direction: column;
-    height: auto;
     background-color: rgba(255, 255, 255, 0.1);
     color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 10px 10px 0 10px;
+    padding: 10px 10px 0 10px;
+    flex: 1;
+    height: 100%;
+    min-height: 1px;
 }
+
+    .latest-cars-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
 
     .latest-cars-card img {
         height: 120px;
         object-fit: cover;
     }
 
-    .latest-car-card .card-body {
-        flex: 1;
+    .latest-cars-card .card-body {
         display: flex;
         flex-direction: column;
+        flex: 1;
         justify-content: space-between;
+    }
+
+    .latest-cars-card h6 {
+        margin: 0;
+        flex-grow: 0;
     }
 
     .latest-cars-card p {
         margin: 0;
     }
+
+.row.d-flex {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
 
 .price-text {
 font-size: 2rem;
