@@ -40,43 +40,85 @@ namespace AutoNet.Controllers
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel vm)
-
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser
+                var existingUser = await _userManager.FindByEmailAsync(vm.Email);
+
+                if (existingUser != null)
                 {
-                    UserName = vm.Email,
-                    FirstName = vm.FirstName,
-                    LastName = vm.LastName,
-                    Email = vm.Email,
-                };
-
-                var result = await _userManager.CreateAsync(user, vm.Password);
-
-                if (result.Succeeded)
-                {
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                    var confirmationLink = Url.Action("ConfirmEmail", "Accounts", new { token, email = user.Email }, Request.Scheme);
-
-                    bool emailSent = await _confirmationEmail.SendEmailAsync(user.Email, confirmationLink);
-
-                    if (emailSent)
+                    var hasPassword = await _userManager.HasPasswordAsync(existingUser);
+                    if (!hasPassword)
                     {
-                        ViewBag.ErrorTitle = "Registration Successful";
-                        ViewBag.ErrorMessage = "Please check your email to confirm your account.";
-                        return View("RegistrationSuccess");
+                        var addPasswordResult = await _userManager.AddPasswordAsync(existingUser, vm.Password);
+                        if (addPasswordResult.Succeeded)
+                        {
+                            var token = await _userManager.GenerateEmailConfirmationTokenAsync(existingUser);
+                            var confirmationLink = Url.Action("ConfirmEmail", "Accounts", new { token, email = existingUser.Email }, Request.Scheme);
+
+                            bool emailSent = await _confirmationEmail.SendEmailAsync(existingUser.Email, confirmationLink);
+
+                            if (emailSent)
+                            {
+                                ViewBag.ErrorTitle = "Account Linked Successfully";
+                                ViewBag.ErrorMessage = "Please check your email to confirm your account.";
+                                return View("RegistrationSuccess");
+                            }
+                            else
+                            {
+                                ViewBag.ErrorTitle = "Account Linked Successfully";
+                                ViewBag.ErrorMessage = "We could not send a confirmation email. Please contact support.";
+                                return View("EmailError");
+                            }
+                        }
+                        foreach (var error in addPasswordResult.Errors)
+                        {
+                            ModelState.AddModelError("", error.Description);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "An account with this email already exists.");
+                        return View(vm);
+                    }
+                }
+                else
+                {
+                    var user = new ApplicationUser
+                    {
+                        UserName = vm.Email,
+                        FirstName = vm.FirstName,
+                        LastName = vm.LastName,
+                        Email = vm.Email,
+                    };
+
+                    var result = await _userManager.CreateAsync(user, vm.Password);
+
+                    if (result.Succeeded)
+                    {
+                        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var confirmationLink = Url.Action("ConfirmEmail", "Accounts", new { token, email = user.Email }, Request.Scheme);
+
+                        bool emailSent = await _confirmationEmail.SendEmailAsync(user.Email, confirmationLink);
+
+                        if (emailSent)
+                        {
+                            ViewBag.ErrorTitle = "Registration Successful";
+                            ViewBag.ErrorMessage = "Please check your email to confirm your account.";
+                            return View("RegistrationSuccess");
+                        }
+                        else
+                        {
+                            ViewBag.ErrorTitle = "Registration Successful";
+                            ViewBag.ErrorMessage = "We could not send a confirmation email. Please contact support.";
+                            return View("EmailError");
+                        }
                     }
 
-                    ViewBag.ErrorTitle = "Registration Successful";
-                    ViewBag.ErrorMessage = "We could not send a confirmation email. Please contact support.";
-                    return View("EmailError");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
                 }
             }
 
