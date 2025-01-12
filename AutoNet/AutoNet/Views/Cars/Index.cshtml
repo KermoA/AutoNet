@@ -1,99 +1,113 @@
 ﻿@model AutoNet.Models.Cars.CarsIndexPaginationViewModel
 
-<div class="container mt-4">
-    <div class="row d-flex justify content-between">
-        <div class="col-7 col-sm-9">
-            <h1>All sale ads</h1>
+<div class="d-flex flex-column min-vh-100">
+    <div class="container mt-4 flex-grow-1">
+        <div class="row d-flex justify-content-between">
+            <div class="col-7 col-sm-9">
+                <h1>All sale ads</h1>
+            </div>
+            <div class="row col-5 col-sm-3">
+                <form method="get" class="d-flex align-items-center justify-content-end">
+                    <label for="itemsTo" class="me-2 mb-0">Cars per page:</label>
+                    <select asp-for="PageSize" class="form-control input-custom-background text-center" style="width: 50px;" onchange="this.form.submit()">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+                </form>
+            </div>
         </div>
-        <div class="row col-5 col-sm-3">
-            <form method="get" class="d-flex align-items-center justify-content-end">
-                <label for="itemsTo" class="me-2 mb-0">Cars per page:</label>
-                <select asp-for="PageSize" class="form-control input-custom-background text-center" style="width: 50px;" onchange="this.form.submit()">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                </select>
-            </form>
-        </div>
-    </div>
 
-    @foreach (var car in Model.Cars)
-    {
-        <div class="container col-lg-12">
-            <a asp-action="Details" asp-controller="Cars" asp-route-id="@car.Id" class="car-card-link">
-                <div class="car-card">
-                    <div class="row">
-                        <div class="col-12 col-sm-4 mb-3 mb-sm-0">
-                            @if (car.Image.Any())
-                            {
-                                <img src="data:image/jpeg;base64,@car.Image.First().Image" alt="Car Image" class="img-fluid rounded" />
-                            }
-                            else
-                            {
-                                <img src="/images/noImagePlaceholder.png" alt="Default Car Image" class="img-fluid rounded" />
-                            }
-                        </div>
-                        <div class="col-12 col-sm-8">
-                            <div class="row">
-                                <h3 class="mb-3">@car.Make @car.Model @car.EngineDisplacementInLiters @car.Power kW</h3>
-                                <div class="col-6 col-sm-4">
-                                    <div><strong>Year:</strong> @car.Year</div>
-                                    <div><strong>Mileage:</strong> @car.Mileage km</div>
-                                </div>
-                                <div class="col-6 col-sm-5">
-                                    <div><strong>Fuel:</strong> @car.Fuel</div>
-                                    <div><strong>Transmission:</strong> @car.Transmission</div>
-                                    <div><strong>Drivetrain:</strong> @car.Drivetrain</div>
-                                </div>
-                                <div class="col-12 col-sm-3">
-                                    @if (car.DiscountPrice.HasValue)
-                                    {
-                                        <div>
-											<span class="price-text" style="text-decoration: line-through;">@car.Price €</span>
-                                        </div>
-                                        <div>
-											<span class="discount-price-text"><strong>@car.DiscountPrice €</strong></span>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div>
-                                            <span class="price-text"><strong>@car.Price €</strong></span>
-                                        </div>
-                                    }
+        @foreach (var car in Model.Cars)
+        {
+            <div class="container col-lg-12">
+                <a asp-action="Details" asp-controller="Cars" asp-route-id="@car.Id" class="car-card-link">
+                    <div class="car-card">
+                        <div class="row">
+                            <div class="col-12 col-sm-4 mb-3 mb-sm-0">
+                                @if (car.Image.Any())
+                                {
+                                    <img src="data:image/jpeg;base64,@car.Image.First().Image" alt="Car Image" class="img-fluid rounded" />
+                                }
+                                else
+                                {
+                                    <img src="/images/noImagePlaceholder.png" alt="Default Car Image" class="img-fluid rounded" />
+                                }
+                            </div>
+                            <div class="col-12 col-sm-8">
+                                <div class="row">
+                                    <h3 class="mb-3">@car.Make @car.Model @car.EngineDisplacementInLiters @car.Power kW</h3>
+                                    <div class="col-6 col-sm-4">
+                                        <div><strong>Year:</strong> @car.Year</div>
+                                        <div><strong>Mileage:</strong> @car.Mileage km</div>
+                                    </div>
+                                    <div class="col-6 col-sm-5">
+                                        <div><strong>Fuel:</strong> @car.Fuel</div>
+                                        <div><strong>Transmission:</strong> @car.Transmission</div>
+                                        <div><strong>Drivetrain:</strong> @car.Drivetrain</div>
+                                    </div>
+                                    <div class="col-12 col-sm-3">
+                                        @if (car.DiscountPrice.HasValue)
+                                        {
+                                            <div>
+                                                <span class="price-text" style="text-decoration: line-through;">@car.Price €</span>
+                                            </div>
+                                            <div>
+                                                <span class="discount-price-text"><strong>@car.DiscountPrice €</strong></span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div>
+                                                <span class="price-text"><strong>@car.Price €</strong></span>
+                                            </div>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </a>
-        </div>
-    }
+                </a>
+            </div>
+        }
+    </div>
 
     <div class="row">
         <div class="col-12 d-flex justify-content-center align-items-center">
-            <nav>
-                <ul class="pagination mb-0">
-                    @if (Model.CurrentPage > 1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="?page=@(Model.CurrentPage - 1)&pageSize=@Model.PageSize">Previous</a>
-                        </li>
-                    }
-                    @for (int i = 1; i <= Model.TotalPages; i++)
-                    {
-                        <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
-                            <a class="page-link" href="?page=@i&pageSize=@Model.PageSize">@i</a>
-                        </li>
-                    }
-                    @if (Model.CurrentPage < Model.TotalPages)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="?page=@(Model.CurrentPage + 1)&pageSize=@Model.PageSize">Next</a>
-                        </li>
-                    }
-                </ul>
-            </nav>
+            @if (Model.TotalPages > 1)
+            {
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        @if (Model.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link btn" href="?page=@(Model.CurrentPage - 1)&pageSize=@Model.PageSize">Prev</a>
+                            </li>
+                        }
+
+                        @{
+                            int startPage = Math.Max(1, Model.CurrentPage - 2);
+                            int endPage = Math.Min(Model.TotalPages, startPage + 4);
+
+                            startPage = Math.Max(1, endPage - 4);
+                        }
+
+                        @for (int i = startPage; i <= endPage; i++)
+                        {
+                            <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                                <a class="page-link btn" href="?page=@i&pageSize=@Model.PageSize">@i</a>
+                            </li>
+                        }
+
+                        @if (Model.CurrentPage < Model.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link btn" href="?page=@(Model.CurrentPage + 1)&pageSize=@Model.PageSize">Next</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
         </div>
     </div>
 </div>
