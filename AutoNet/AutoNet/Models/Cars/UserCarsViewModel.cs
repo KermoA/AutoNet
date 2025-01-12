@@ -13,8 +13,8 @@
             public string Fuel { get; set; }
             public string Transmission { get; set; }
             public string Drivetrain { get; set; }
-            public int InspectionMonth { get; set; }
-            public int InspectionYear { get; set; }
+            public int? InspectionMonth { get; set; }
+            public int? InspectionYear { get; set; }
             public string Description { get; set; }
             public CarImageViewModel Image { get; set; }
             public int Price { get; set; }
