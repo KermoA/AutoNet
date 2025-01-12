@@ -299,11 +299,11 @@ color: #888;
     padding: 5px;
 }
 
-    .smaller-car-images .col-3:nth-child(1) {
+    .smaller-car-images .col-3:nth-child(4n+1) {
         padding: 5px 5px 5px 12px;
     }
-    .smaller-car-images .col-3:nth-child(4) {
-        padding: 5px 5px 12px 5px;
+    .smaller-car-images .col-3:nth-child(4n) {
+        padding:5px 12px 5px 5px;
     }
 
 .car-update-images {
