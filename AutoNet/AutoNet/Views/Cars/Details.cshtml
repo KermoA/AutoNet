@@ -35,7 +35,20 @@
                     <p>@Model.Fuel</p>
                     <p>@Model.Transmission</p>
                     <p>@Model.Drivetrain</p>
-                    <p>@Model.InspectionMonth.@Model.InspectionYear</p>
+                    <p>
+                        @if (Model.InspectionMonth == null && Model.InspectionYear != null)
+                        {
+                            @Model.InspectionYear
+                        }
+                        else if (Model.InspectionMonth == null && Model.InspectionYear == null)
+                        {
+                            @:N/A
+                        }
+                        else
+                        {
+                            @(Model.InspectionMonth?.ToString("D2") + " / " + Model.InspectionYear?.ToString())
+                        }
+                    </p>
                     <p>@Model.Price €</p>
                     <p>
                         @(Model.DiscountPrice.HasValue
