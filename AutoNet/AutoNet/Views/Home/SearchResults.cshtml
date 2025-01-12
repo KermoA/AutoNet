@@ -3,25 +3,42 @@
 <div class="d-flex flex-column min-vh-100">
     <div class="container flex-grow-1">
         <div class="row d-flex justify-content-between">
-            <div class="col-7 col-sm-9">
+            <div class="col-4 col-sm-4 d-flex align-items-center">
                 <h1>Search Results</h1>
             </div>
-            <div class="row col-5 col-sm-3">
-                <form method="get" asp-action="SearchResults" class="d-flex align-items-center justify-content-end">
-                    <label for="pageSize" class="me-2 mb-0">Cars per page:</label>
-                    <select id="pageSize" name="pageSize" class="form-control input-custom-background text-center" style="width: 50px;" onchange="this.form.submit()">
-                        @{
-                            var pageSizes = new[] { 10, 25, 50 };
-                        }
-                        @foreach (var size in pageSizes)
-                        {
-                            <option value="@size" selected="@(Model.PageSize == size)">@size</option>
-                        }
-                    </select>
-                    <input type="hidden" name="page" value="1" />
+
+            <div class="col-8 col-sm-8 d-flex justify-content-end align-items-center">
+                <form asp-action="SearchResults" method="get" class="d-flex align-items-center justify-content-between mb-3">
+                    <div class="form-group d-flex me-3">
+                        <label for="sortOrder" class="me-2 mb-0">Sort:</label>
+                        @Html.DropDownList("sortOrder", new SelectList(new[] {
+                        new { Value = "", Text = "Price (Ascending)" },
+                        new { Value = "price_desc", Text = "Price (Descending)" },
+                        new { Value = "year_asc", Text = "Year (Ascending)" },
+                        new { Value = "year_desc", Text = "Year (Descending)" }
+                        }, "Value", "Text", Model.SortOrder), new { @class = "form-control input-custom-background", onchange = "this.form.submit()" })
+                    </div>
+
+                    <div class="form-group d-flex me-3">
+                        <label for="pageSize" class="me-2 mb-0">Per page:</label>
+                        <select id="pageSize" name="pageSize" class="form-control input-custom-background text-center" style="width: 70px;" onchange="this.form.submit()">
+                            @{
+                                var pageSizes = new[] { 10, 25, 50 };
+                            }
+                            @foreach (var size in pageSizes)
+                            {
+                                <option value="@size" selected="@(Model.PageSize == size)">@size</option>
+                            }
+                        </select>
+                    </div>
+
+                    <input type="hidden" name="page" value="@Model.CurrentPage" />
+                    <input type="hidden" name="sortOrder" value="@Model.SortOrder" />
                 </form>
             </div>
         </div>
+
+
         @foreach (var car in Model.Cars)
         {
             <div class="container col-lg-12">
@@ -84,7 +101,7 @@
                     @if (Model.CurrentPage > 1)
                     {
                         <li class="page-item">
-                            <a class="page-link btn" asp-action="SearchResults" asp-route-page="@(Model.CurrentPage - 1)" asp-route-pageSize="@Model.PageSize">Previous</a>
+                            <a class="page-link btn" asp-action="SearchResults" asp-route-page="@(Model.CurrentPage - 1)" asp-route-pageSize="@Model.PageSize" asp-route-sortOrder="@Model.SortOrder">Previous</a>
                         </li>
                     }
 
@@ -98,14 +115,14 @@
                     @for (int i = startPage; i <= endPage; i++)
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                            <a class="page-link btn" asp-action="SearchResults" asp-route-page="@i" asp-route-pageSize="@Model.PageSize">@i</a>
+                            <a class="page-link btn" asp-action="SearchResults" asp-route-page="@i" asp-route-pageSize="@Model.PageSize" asp-route-sortOrder="@Model.SortOrder">@i</a>
                         </li>
                     }
 
                     @if (Model.CurrentPage < Model.TotalPages)
                     {
                         <li class="page-item">
-                            <a class="page-link btn" asp-action="SearchResults" asp-route-page="@(Model.CurrentPage + 1)" asp-route-pageSize="@Model.PageSize">Next</a>
+                            <a class="page-link btn" asp-action="SearchResults" asp-route-page="@(Model.CurrentPage + 1)" asp-route-pageSize="@Model.PageSize" asp-route-sortOrder="@Model.SortOrder">Next</a>
                         </li>
                     }
                 </ul>

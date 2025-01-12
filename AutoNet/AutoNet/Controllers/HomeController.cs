@@ -60,15 +60,33 @@ namespace AutoNet.Controllers
             return RedirectToAction("SearchResults");
         }
 
-        public async Task<IActionResult> SearchResults(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> SearchResults(int page = 1, int pageSize = 10, string sortOrder = null)
         {
             var resultsJson = HttpContext.Session.GetString("SearchResults");
             var results = string.IsNullOrEmpty(resultsJson) ? new List<Car>() : JsonConvert.DeserializeObject<List<Car>>(resultsJson);
 
-            var pagedResults = results
+			switch (sortOrder)
+			{
+				case "price_desc":
+					results = results.OrderByDescending(car => car.Price).ToList();
+					break;
+				case "year_asc":
+					results = results.OrderBy(car => car.Year).ToList();
+					break;
+				case "year_desc":
+					results = results.OrderByDescending(car => car.Year).ToList();
+					break;
+				default:
+					results = results.OrderBy(car => car.Price).ToList();
+					break;
+			}
+
+			var pagedResults = results
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
+
+            
 
             foreach (var car in pagedResults)
             {
@@ -82,8 +100,9 @@ namespace AutoNet.Controllers
                 Cars = pagedResults,
                 CurrentPage = page,
                 TotalPages = (int)Math.Ceiling((double)results.Count / pageSize),
-                PageSize = pageSize
-            };
+                PageSize = pageSize,
+				SortOrder = sortOrder
+			};
 
             return View(viewModel);
         }
