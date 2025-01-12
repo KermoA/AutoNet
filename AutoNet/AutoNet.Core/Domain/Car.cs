@@ -37,10 +37,10 @@ namespace AutoNet.Core.Domain
 		public DrivetrainType Drivetrain { get; set; }
 
 		[Range(1, 12)]
-		public int InspectionMonth { get; set; }
+		public int? InspectionMonth { get; set; }
 
 		[Range(1900, 2100)]
-		public int InspectionYear { get; set; }
+		public int? InspectionYear { get; set; }
 		public string InspectionValidFormatted => $"{InspectionMonth:D2}/{InspectionYear}";
 
 		[StringLength(1000)]
