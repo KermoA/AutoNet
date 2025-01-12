@@ -132,21 +132,21 @@
                                         <img src="/images/noImagePlaceholder.png" alt="Default Car Image" class="img-fluid mb-3" style="height:120px;" />
 
                                     }
-                                    <h6 class="mb-1">@car.Make @car.Model</h6>
+                                    <h5 class="mb-1">@car.Make @car.Model</h5>
                                     <div class="row mt-auto mb-2">
                                         <div class="col-6">
-                                            <p>@car.Year</p>
+											<p><strong>@car.Year</strong></p>
                                         </div>
                                         <div class="col-6 text-end">
                                             @if (car.DiscountPrice.HasValue)
                                             {
 
 
-												<p style="color: red;">@car.DiscountPrice.Value €</p>
+												<p style="color: red;"><strong>@car.DiscountPrice.Value €</strong></p>
                                             }
                                             else
                                             {
-                                                <p>@car.Price €</p>
+												<p><strong>@car.Price €</strong></p>
                                             }
                                         </div>
                                     </div>

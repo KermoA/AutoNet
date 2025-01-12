@@ -28,7 +28,7 @@ namespace AutoNet.Controllers
             var latestCars = await _context.Cars
                 .Include(car => car.Files)
                 .OrderByDescending(car => car.CreatedAt)
-                .Take(15)
+                .Take(12)
                 .Select(car => new LatestCarViewModel
                 {
                     Id = car.Id,

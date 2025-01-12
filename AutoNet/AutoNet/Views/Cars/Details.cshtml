@@ -50,10 +50,12 @@
                         }
                     </p>
                     <p>@Model.Price €</p>
-                    <p>
+                    <p style="color: red;">
+                        <strong>
                         @(Model.DiscountPrice.HasValue
                             ? Model.DiscountPrice.Value.ToString() + " €"
                             : "")
+                        </strong>
                     </p>
                 </div>
                 <div class="col-12 col-sm-6">
