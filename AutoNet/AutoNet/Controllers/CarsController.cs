@@ -235,7 +235,7 @@ namespace AutoNet.Controllers
                 return View("CreateUpdate", vm);
             }
 
-            return RedirectToAction(nameof(Index), vm);
+            return RedirectToAction(nameof(UserCars), vm);
         }
 
 
